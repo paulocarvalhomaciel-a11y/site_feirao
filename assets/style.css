@@ -1,0 +1,234 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* Reset/base simples */
+:root{
+  --max-width: 1000px;
+  --accent: #2b7a78;
+  --muted: #666;
+  --bg: #fffdfa;
+  --gap: 1rem;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:var(--bg); color:#111;}
+a{color:var(--accent); text-decoration:none}
+.container{max-width:var(--max-width);margin:0 auto;padding:1rem}
+
+body {
+    background: linear-gradient(to bottom, #F2B544 0%, #f0f0f0 100%); /* Gradiente suave com a cor mais clara da paleta para um fundo acolhedor */
+    font-family: 'Roboto', sans-serif;
+    color: #733009; /* Marrom escuro da paleta para texto principal, evocando terra e raízes culturais */
+    margin: 0;
+    padding: 0;
+    line-height: 1.8;
+    font-size: 16px;
+}
+
+header {
+    background: linear-gradient(to right, #F29B30, #D9560B); /* Gradiente laranja vibrante para o header, simbolizando energia e miscigenação */
+    text-align: center;
+    padding: 40px 20px;
+    box-shadow: 0 4px 10px rgba(115, 48, 9, 0.2); /* Sombra sutil com marrom da paleta para profundidade */
+    position: relative;
+    overflow: hidden;
+}
+
+.banner {
+    width: 100%;
+    background: #f4f2ef;
+    padding: 0;
+}
+
+.banner img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(191, 55, 6, 0.3); /* Sombra com tom avermelhado para destaque */
+    transition: transform 0.3s ease-in-out;
+}
+
+.banner img:hover {
+    transform: scale(1.05); /* Efeito de zoom suave ao hover para interatividade */
+}
+
+.banner figcaption {
+    font-size: .9rem;
+    color: var(--muted);
+    text-align: center;
+    padding: .5rem;
+}
+
+nav {
+    background: #ffffff;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    padding: 15px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(115, 48, 9, 0.15);
+}
+
+nav .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: .5rem 0;
+    display: flex;
+    gap: 1rem;
+}
+
+nav ul li {
+    margin: 0 20px;
+}
+
+nav a {
+    padding: .4rem .6rem;
+    border-radius: 4px;
+    color: #F2B544; /* Amarelo claro da paleta para links, contrastando bem */
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 18px;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+nav a:hover, nav a:focus {
+    background: #f0f6f6;
+    color: #FFFFFF; /* Branco puro no hover para destaque */
+    transform: translateY(-2px); /* Efeito de elevação sutil */
+}
+
+main, section {
+    padding: 1rem;
+}
+
+main {
+    max-width: 900px; /* Aumentado para melhor legibilidade em desktops */
+    margin: 40px auto;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.95); /* Fundo branco semi-transparente para sobrepor o gradiente do body */
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(217, 86, 11, 0.1); /* Sombra laranja suave */
+}
+
+h1 {
+    font-family: 'Merriweather', serif;
+    color: #D9560B; /* Laranja médio para títulos, vibrante e temático */
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px rgba(115, 48, 9, 0.2); /* Sombra de texto para elegância */
+}
+
+p {
+    color: #733009; /* Marrom escuro para parágrafos, legível e natural */
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+section {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 2px dashed #F29B30; /* Borda dashed com laranja para um toque folclórico */
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(to top, #733009, #BF3706); /* Gradiente marrom-vermelho para footer, ancorando o design */
+    color: #F2B544; /* Amarelo claro para texto no footer */
+    font-size: 14px;
+    margin-top: 40px;
+}
+
+/* Skip link */
+.skip-link {
+    position: absolute;
+    left: -999px;
+    top: auto;
+    background: #000;
+    color: #fff;
+    padding: .5rem 1rem;
+    z-index: 100;
+}
+.skip-link:focus {
+    left: 1rem;
+    top: 1rem;
+    border-radius: 4px;
+}
+
+/* Form */
+form {
+    max-width: 600px;
+}
+label {
+    display: block;
+    margin-top: .75rem;
+    font-weight: 600;
+}
+input[type="text"], input[type="email"], textarea {
+    width: 100%;
+    padding: .6rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-top: .25rem;
+    background: #fff;
+}
+button {
+    margin-top: 1rem;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: .6rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+button:hover {
+    opacity: .95;
+}
+.form-note {
+    font-size: .85rem;
+    color: var(--muted);
+    margin-top: .5rem;
+}
+
+/* Media queries para responsividade */
+@media (max-width: 768px) {
+    main {
+        padding: 20px;
+        margin: 20px;
+    }
+    
+    h1 {
+        font-size: 28px;
+    }
+    
+    nav ul li {
+        margin: 10px;
+    }
+    
+    nav ul li a {
+        font-size: 16px;
+    }
+}
+
+@media(min-width:800px){
+  main{display:block;padding:2rem}
+  nav ul{gap:1.25rem}
+}
+
+/* Adicionais para beleza: Transições suaves e acessibilidade */
+a {
+    transition: all 0.3s ease;
+}
+
+:focus {
+    outline: 2px solid #D9560B; /* Foco acessível com cor da paleta */
+}
