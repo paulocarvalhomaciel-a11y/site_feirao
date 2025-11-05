@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Folclore Brasileiro</title>
+    <meta name="description" content="Portal sobre o folclore e a história do Brasil: lendas, mitos e memória cultural.">
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+    <!-- Skip link para acessibilidade -->
+    <a class="skip-link" href="#main">Pular para o conteúdo</a>
+
+    <header>
+        <div class="banner">
+            <figure>
+                <picture>
+                    <!-- fontes alternativas (WebP) e fallback -->
+                    <source srcset="https://postcolonialist.com/wp-content/uploads/2014/03/Brasileiros2.webp" type="image/webp">
+                    <img src="https://postcolonialist.com/wp-content/uploads/2014/03/Brasileiros2.jpg" alt="Imagem representativa da diversidade brasileira" loading="lazy">
+                </picture>
+                <figcaption>Representação simbólica da miscigenação e da cultura brasileira.</figcaption>
+            </figure>
+        </div>
+    </header>
+    
+    <nav aria-label="Navegação principal">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#history">História</a></li>
+            <li><a href="#folklore">Folclore</a></li>
+            <li><a href="#contact">Contato</a></li>
+        </ul>
+    </nav>
+    
+    <main id="main">
+        <h1>Bem-vindo ao Site sobre Folclore Brasileiro</h1>
+        <p>A chegada das caravelas portuguesas em 1500 marcou o início de uma era transformadora no que viria a se tornar o Brasil. Liderados por Pedro Álvares Cabral, os europeus encontraram uma terra habitada por povos indígenas diversos, como os Tupi, Guarani e muitos outros, que possuíam tradições ricas, línguas e crenças espirituais profundamente conectadas à natureza. As interações iniciais foram uma mistura de curiosidade, comércio e conflito, preparando o terreno para séculos de intercâmbio cultural.</p>
+        <p>Com o avanço da colonização, os portugueses trouxeram escravos africanos para trabalhar em plantações de açúcar e minas, a partir da década de 1530. Milhões de africanos de várias regiões, incluindo Angola, Congo e Benin, foram trazidos à força para o Brasil, levando consigo suas línguas, religiões, músicas e costumes. Essa trágica história de escravidão levou a uma profunda mistura de raças e culturas, conhecida como miscigenação, que é um pilar da identidade brasileira.</p>
+        <p>A fusão de elementos indígenas, africanos e portugueses deu origem a um folclore brasileiro único. Das lendas indígenas do Curupira, o protetor das florestas, às divindades africanas influenciadas no Candomblé, e contos europeus adaptados ao contexto local, o folclore brasileiro é uma tapeçaria vibrante. Figuras como o Saci-Pererê, um menino travesso de uma perna só com origens africanas e indígenas, e o festival Bumba Meu Boi, misturando as três influências, exemplificam essa mistura.</p>
+        <p>Hoje, esse mosaico cultural é celebrado em carnavais, músicas como samba e bossa nova, culinária e vida cotidiana. A diversidade do Brasil é sua força, um testemunho vivo da resiliência e criatividade nascidas de encontros históricos. Explore mais sobre essa rica herança em nosso site.</p>
+    </main>
+    
+    <!-- Placeholders para outras seções -->
+    <section id="history">
+        <h2>História</h2>
+        <p>Placeholder para a seção de História. Aqui virão detalhes sobre a colonização e miscigenação.</p>
+    </section>
+    
+    <section id="folklore">
+        <h2>Folclore</h2>
+        <p>Placeholder para a seção de Folclore. Aqui virão lendas e mitos brasileiros.</p>
+    </section>
+    
+    <section id="contact">
+        <h2>Contato</h2>
+        <p>Envie sua sugestão ou contribuição sobre lendas e histórias.</p>
+        <form id="contactForm" action="#" method="post" novalidate>
+            <label for="name">Nome</label>
+            <input id="name" name="name" type="text" required>
+
+            <label for="email">E‑mail</label>
+            <input id="email" name="email" type="email" required>
+
+            <label for="message">Mensagem</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+
+            <button type="submit">Enviar</button>
+            <p class="form-note">Este formulário é de exemplo; sem backend configurado.</p>
+        </form>
+    </section>
+    
+    <footer>
+        <p>&copy; <span id="year">2025</span> Folclore Brasileiro. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+    // Atualiza o ano no rodapé e fornece um feedback simples ao submeter o formulário (front-end)
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // validação básica
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const message = document.getElementById('message').value.trim();
+        if (!name || !email || !message) {
+            alert('Por favor, preencha todos os campos.');
+            return;
+        }
+        // feedback para o usuário (aqui você pode integrar com um backend)
+        alert('Obrigado, ' + name + '! Sua mensagem foi recebida (simulação).');
+        this.reset();
+    });
+    </script>
+</body>
+</html>
