@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quilombo Defender</title>
+    <style>
+        .back-link {
+		position: fixed;
+		top: 18px;
+		left: 18px;
+		z-index: 120;
+		display: inline-block;
+		background: linear-gradient(45deg, var(--gold), var(--sunset));
+		color: var(--deep);
+		text-decoration: none;
+		padding: 10px 14px;
+		border-radius: 999px;
+		font-weight: 800;
+		font-size: 0.95rem;
+		box-shadow: 0 8px 20px rgba(242,179,61,0.25);
+		transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+	}
+
+
+
+        body { margin: 0; padding: 20px; background: #2F4F2F; color: white; font-family: Arial, sans-serif; }
+        #canvas { border: 3px solid #8B4513; display: block; margin: 0 auto; background: #228B22; }
+        #ui { position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.7); padding: 15px; border-radius: 10px; }
+        #shop button { display: block; margin: 5px 0; padding: 8px 12px; background: #8B4513; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        #shop button:hover { background: #A0522D; }
+        #startWave { background: #FF4500; font-weight: bold; }
+        #placing { font-weight: bold; color: #FFD700; }
+    </style>
+</head>
+<body>
+    <a class="back-link" href="index.html">← Voltar</a>
+    <h1 style="text-align: center;">🛡️ Quilombo Defender 🛡️</h1>
+    <p style="text-align: center; max-width: 800px; margin: 0 auto 20px;">Defenda o quilombo dos bandeirantes brancos! Construa fazendas e forjas para recursos, armadilhas, guerreiros, arqueiros, Zumbi e Dandara para combater. Sobreviva às hordas automáticas (20s entre elas) e lanceiros negros que aparecem a cada 45s. Inspirado na história real dos quilombos.</p>
+    <canvas id="canvas" width="800" height="600"></canvas>
+    <div id="ui">
+        <p>🍽️ Comida: <span id="food">140</span> | ⚔️ Armas: <span id="weapons">175</span> | ❤️ Vidas: <span id="lives">20</span> | 🌊 Onda: <span id="wave">0</span></p>
+        <p id="placing">Colocando: <span id="placingSpan">Nada</span></p>
+        <div id="shop">
+            <button onclick="setPlacing('farm')">🌽 Fazenda (100 Armas)</button>
+            <button onclick="setPlacing('forge')">⚒️ Forja (175 Comida)</button>
+            <button onclick="setPlacing('trap')">🪤 Armadilha (30 Comida)</button>
+            <button onclick="setPlacing('warrior')">⚔️ Guerreiro (60 Comida + 20 Armas)</button>
+            <button onclick="setPlacing('arqueiro1')">🏹 Arqueiro N1 (100 Comida + 75 Armas)</button>
+            <button onclick="setPlacing('arqueiro2')">🏹 Arqueiro N2 (250 Comida + 150 Armas)</button>
+            <button onclick="setPlacing('arqueiro3')">🏹 Arqueiro N3 (450 Comida + 250 Armas)</button>
+            <button onclick="setPlacing('zumbi')">👑 Zumbi (800 Armas)</button>
+            <button onclick="setPlacing('dandara')">🗡️ Dandara (400 Comida + 400 Armas)</button>
+            <button onclick="setPlacing(null)">❌ Cancelar</button>
+        </div>
+        <button id="startWave" onclick="startWave()" style="margin-top:10px;">🚀 Iniciar Onda Agora (Auto: 20s)</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let food = 140, weapons = 175, lives = 20, wave = 0;
+        let towers = [{x:80, y:80, type:'farm'}];
+        let enemies = [];
+        let placing = null;
+        let waveActive = false;
+        let hoveredSpot = null;
+        let lastLanceiroTime = 0;
+        let waveCooldownTime = 0;
+
+        const path = [
+            {x:0, y:300}, {x:200, y:300}, {x:200, y:100}, {x:400, y:100},
+            {x:400, y:500}, {x:600, y:500}, {x:600, y:200}, {x:800, y:200}
+        ];
+        const reversedPath = [...path].reverse();
+
+        const spots = [
+            {x:80, y:80, taken: true}, {x:80, y:450, taken:false}, {x:80, y:550, taken:false},
+            {x:250, y:450, taken:false}, {x:320, y:50, taken:false}, {x:320, y:550, taken:false},
+            {x:450, y:50, taken:false}, {x:450, y:300, taken:false}, {x:450, y:550, taken:false},
+            {x:550, y:80, taken:false}, {x:720, y:80, taken:false}, {x:720, y:400, taken:false},
+            {x:720, y:550, taken:false}
+        ];
+
+        const costs = {
+            farm: {food:0, weapons:100},
+            forge: {food:175, weapons:0},
+            trap: {food:30, weapons:0},
+            warrior: {food:60, weapons:20},
+            arqueiro1: {food:100, weapons:75},
+            arqueiro2: {food:250, weapons:150},
+            arqueiro3: {food:450, weapons:250},
+            zumbi: {food:0, weapons:800},
+            dandara: {food:400, weapons:400}
+        };
+
+        const towerTypes = {
+            trap: {range:100, dmg:40, cd:2500, color:'limegreen', maxHp:150},
+            warrior: {range:150, dmg:20, cd:1000, color:'royalblue', maxHp:200},
+            arqueiro1: {range:200, dmg:25, cd:1200, color:'#8B4513', maxHp:250},
+            arqueiro2: {range:200, dmg:30, cd:900, color:'#8B4513', maxHp:280},
+            arqueiro3: {range:200, dmg:45, cd:720, color:'#FF4500', maxHp:320},
+            zumbi: {range:250, dmg:60, cd:600, color:'white', maxHp:900},
+            dandara: {range:180, dmg:35, cd:700, color:'#FFD700', maxHp:800}
+        };
+
+        const icons = {
+            farm: '🌽',
+            forge: '⚒️',
+            trap: '🪤',
+            warrior: '⚔️',
+            arqueiro1: '🏹',
+            arqueiro2: '🏹',
+            arqueiro3: '🏹',
+            zumbi: '👑',
+            dandara: '🗡️'
+        };
+
+        const facts = [
+            "Quilombo dos Palmares foi o maior da história brasileira, com mais de 100 anos de resistência contra bandeirantes!",
+            "Zumbi dos Palmares (1655-1695) foi o último grande líder de Palmares, símbolo de luta pela liberdade.",
+            "Dandara dos Palmares, esposa de Zumbi, era uma estrategista e guerreira que liderava batalhas.",
+            "Quilombo do Catucá, em Pernambuco (1814-1835), era o maior da região, perto de Recife e Olinda.",
+            "Quilombo Kalunga, no Goiás, é uma comunidade ancestral que guarda tradições no Cerrado."
+        ];
+
+        function dist(ax, ay, bx, by) {
+            return Math.hypot(ax - bx, ay - by);
+        }
+
+        function moveEnemy(e) {
+            if (e.type === 'lanceiro' && e.locked) return false;
+            if (e.direction === 1 && e.pathIndex >= e.path.length - 1) return true;
+            if (e.direction === -1 && e.pathIndex <= 0) return true;
+            const curr = e.path[e.pathIndex];
+            const next = e.path[e.pathIndex + e.direction];
+            const dx = next.x - curr.x;
+            const dy = next.y - curr.y;
+            const segLen = Math.hypot(dx, dy);
+            e.progress += e.speed;
+            if (e.progress >= 1) {
+                e.pathIndex += e.direction;
+                e.progress -= 1;
+            }
+            const progDist = e.progress * segLen;
+            e.x = curr.x + (dx / segLen) * progDist;
+            e.y = curr.y + (dy / segLen) * progDist;
+            return false;
+        }
+
+        function spawnLanceiro(now) {
+            const hp = 900;
+            enemies.push({
+                hp, maxHp: hp, speed: 0.0045,
+                pathIndex: 0, progress: 0, direction: 1,
+                x: reversedPath[0].x, y: reversedPath[0].y,
+                path: reversedPath,
+                type: 'lanceiro',
+                range: 80, dmg: 75, cd: 1800,
+                locked: false, lastShot: 0
+            });
+        }
+
+        function update() {
+            const now = Date.now();
+
+            // Produção de recursos
+            towers.forEach(t => {
+                if (t.type === 'farm') {
+                    const delta = now - (t.lastProd || 0);
+                    if (delta > 800) {
+                        const times = Math.floor(delta / 800);
+                        food += 2 * times;
+                        t.lastProd = now - (delta % 800);
+                    }
+                }
+                if (t.type === 'forge') {
+                    const delta = now - (t.lastProd || 0);
+                    if (delta > 800) {
+                        const times = Math.floor(delta / 800);
+                        weapons += 2 * times;
+                        t.lastProd = now - (delta % 800);
+                    }
+                }
+            });
+
+            // Mover e filtrar inimigos
+            enemies = enemies.filter(e => {
+                if (e.hp <= 0) return false;
+                const remove = moveEnemy(e);
+                if (remove) {
+                    lives--;
+                    if (lives <= 0) {
+                        alert('💀 Game Over! O quilombo caiu. Recarregue para tentar novamente.');
+                        location.reload();
+                    }
+                }
+                return !remove;
+            });
+
+            // Ataques das torres
+            towers = towers.filter(t => {
+                if (t.hp && t.hp <= 0) {
+                    const spot = spots.find(s => s.x === t.x && s.y === t.y);
+                    if (spot) spot.taken = false;
+                    return false;
+                }
+                if (!t.dmg || now - (t.lastShot || 0) < t.cd) return true;
+                let closest = null;
+                let minDist = t.range;
+                enemies.forEach(e => {
+                    const d = dist(t.x, t.y, e.x, e.y);
+                    if (d < minDist) {
+                        minDist = d;
+                        closest = e;
+                    }
+                });
+                if (closest) {
+                    closest.hp -= t.dmg;
+                    t.lastShot = now;
+                }
+                return true;
+            });
+
+            // Ataques dos lanceiros
+            enemies.forEach(e => {
+                if (e.type !== 'lanceiro' || now - (e.lastShot || 0) < e.cd) return;
+                let closest = null;
+                let minDist = e.range;
+                // Torres de combate
+                towers.forEach(t => {
+                    if (!t.hp) return;
+                    const d = dist(e.x, e.y, t.x, t.y);
+                    if (d < minDist) {
+                        minDist = d;
+                        closest = t;
+                    }
+                });
+                // Outros inimigos
+                enemies.forEach(ee => {
+                    if (ee === e || ee.hp <= 0) return;
+                    const d = dist(e.x, e.y, ee.x, ee.y);
+                    if (d < minDist) {
+                        minDist = d;
+                        closest = ee;
+                    }
+                });
+                if (closest && closest.hp !== undefined) {
+                    closest.hp -= e.dmg;
+                    e.lastShot = now;
+                    e.locked = (minDist < 60);
+                } else {
+                    e.locked = false;
+                }
+            });
+
+            // Spawn lanceiro
+            if (now - lastLanceiroTime > 45000) {
+                spawnLanceiro(now);
+                lastLanceiroTime = now;
+            }
+
+            // Verificar fim de onda
+            if (waveActive && enemies.length === 0) {
+                waveActive = false;
+                showFact();
+                waveCooldownTime = now;
+            }
+
+            // Auto onda
+            if (!waveActive && enemies.length === 0 && now - waveCooldownTime > 20000) {
+                startWave();
+            }
+
+            // Atualizar UI
+            document.getElementById('food').textContent = Math.floor(food);
+            document.getElementById('weapons').textContent = Math.floor(weapons);
+            document.getElementById('lives').textContent = lives;
+            document.getElementById('wave').textContent = wave;
+            document.getElementById('placingSpan').textContent = placing || 'Nada';
+            document.getElementById('startWave').disabled = waveActive || enemies.length > 0;
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, 800, 600);
+            // Fundo
+            ctx.fillStyle = '#228B22';
+            ctx.fillRect(0, 0, 800, 600);
+            // Caminho
+            ctx.strokeStyle = '#654321';
+            ctx.lineWidth = 60;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+            path.forEach((p, i) => {
+                if (i === 0) ctx.moveTo(p.x, p.y);
+                else ctx.lineTo(p.x, p.y);
+            });
+            ctx.stroke();
+            // Spots livres
+            spots.forEach(s => {
+                if (!s.taken) {
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, 20, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(0, 255, 0, 0.3)';
+                    ctx.fill();
+                }
+            });
+            // Torres
+            towers.forEach(t => {
+                const col = t.color || (t.type === 'farm' ? '#D2691E' : t.type === 'forge' ? '#A9A9A9' : 'gray');
+                ctx.fillStyle = col;
+                ctx.fillRect(t.x - 15, t.y - 15, 30, 30);
+                ctx.fillStyle = t.type === 'zumbi' ? 'black' : 'white';
+                ctx.font = 'bold 20px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(icons[t.type] || t.type[0].toUpperCase(), t.x, t.y);
+                // Barra de HP
+                if (t.maxHp) {
+                    const hpPct = t.hp / t.maxHp;
+                    ctx.fillStyle = 'red';
+                    ctx.fillRect(t.x - 15, t.y - 25, 30, 5);
+                    ctx.fillStyle = `hsl(${120 * hpPct}, 100%, 50%)`;
+                    ctx.fillRect(t.x - 15, t.y - 25, 30 * hpPct, 5);
+                }
+            });
+            // Preview sombra
+            if (placing && hoveredSpot) {
+                ctx.globalAlpha = 0.5;
+                const typ = towerTypes[placing];
+                const col = typ ? typ.color : (placing === 'farm' ? '#D2691E' : placing === 'forge' ? '#A9A9A9' : 'gray');
+                ctx.fillStyle = col;
+                ctx.fillRect(hoveredSpot.x - 15, hoveredSpot.y - 15, 30, 30);
+                ctx.fillStyle = placing === 'zumbi' ? 'black' : 'white';
+                ctx.font = 'bold 20px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(icons[placing] || placing[0].toUpperCase(), hoveredSpot.x, hoveredSpot.y);
+                ctx.globalAlpha = 1;
+            }
+            // Inimigos
+            enemies.forEach(e => {
+                const hpPct = e.hp / e.maxHp;
+                ctx.fillStyle = e.type === 'lanceiro' ? '#2F1B14' : '#F5F5F5';
+                ctx.strokeStyle = e.type === 'lanceiro' ? '#FFD700' : '#333';
+                ctx.lineWidth = 2;
+                ctx.fillRect(e.x - 10, e.y - 10, 20, 20);
+                ctx.strokeRect(e.x - 10, e.y - 10, 20, 20);
+                if (e.type === 'lanceiro') {
+                    ctx.fillStyle = 'white';
+                    ctx.font = 'bold 16px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText('🗡️', e.x, e.y + 2);
+                }
+            });
+        }
+
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function setPlacing(typ) {
+            placing = typ;
+        }
+
+        function startWave() {
+            if (waveActive || enemies.length > 0) return;
+            const now = Date.now();
+            waveCooldownTime = now;
+            wave++;
+            waveActive = true;
+            const numEnemies = 3 + wave * 2;
+            const delay = 800;
+            for (let i = 0; i < numEnemies; i++) {
+                setTimeout(() => {
+                    const hp = 30 + wave * 10;
+                    const speed = 0.003 + wave * 0.0003;
+                    enemies.push({
+                        hp, maxHp: hp, speed,
+                        pathIndex: 0, progress: 0, direction: 1,
+                        x: path[0].x, y: path[0].y,
+                        path: path,
+                        type: 'bandeirante'
+                    });
+                }, i * delay);
+            }
+        }
+
+        function showFact() {
+            const fact = facts[wave % facts.length];
+            alert(`🏆 Onda ${wave} vencida!\n\n${fact}\n\n+100 Comida e Armas!`);
+            food += 100;
+            weapons += 100;
+        }
+
+        // Mouse hover
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const mx = e.clientX - rect.left;
+            const my = e.clientY - rect.top;
+            hoveredSpot = null;
+            let minD = 40;
+            spots.forEach(s => {
+                if (s.taken) return;
+                const d = dist(s.x, s.y, mx, my);
+                if (d < minD) {
+                    minD = d;
+                    hoveredSpot = s;
+                }
+            });
+        });
+
+        // Clique para colocar
+        canvas.addEventListener('click', (e) => {
+            if (!placing || !hoveredSpot) return;
+            const cost = costs[placing];
+            if (food >= cost.food && weapons >= cost.weapons) {
+                food -= cost.food;
+                weapons -= cost.weapons;
+                const t = {x: hoveredSpot.x, y: hoveredSpot.y, type: placing};
+                const typ = towerTypes[placing];
+                if (typ) {
+                    Object.assign(t, typ);
+                    t.hp = typ.maxHp;
+                } else {
+                    // farm/forge
+                }
+                towers.push(t);
+                hoveredSpot.taken = true;
+                placing = null;
+                hoveredSpot = null;
+            }
+        });
+
+        gameLoop();
+    </script>
+</body>
+</html>

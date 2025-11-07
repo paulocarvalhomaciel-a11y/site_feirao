@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jogo do Milhão TURBO - Culinária Afro-Brasileira</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Roboto:wght@700&display=swap');
+
+    :root {
+      --gold: #f2b33d;
+      --sunset: #f28500;
+      --deep: #001f3f;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background: linear-gradient(135deg, #ffd89b, #19547b, #1a2a6c);
+      font-family: 'Roboto', sans-serif;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+    .confetti {
+      position: absolute;
+      width: 10px; height: 10px;
+      background: #f1c40f;
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+
+    #game {
+      background: rgba(0,0,0,0.85);
+      border-radius: 25px;
+      padding: 35px;
+      width: 100%;
+      max-width: 650px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+      text-align: center;
+      position: relative;
+      z-index: 10;
+      border: 4px solid #ffd700;
+    }
+    h1 {
+      font-family: 'Fredoka One', cursive;
+      font-size: 2.4rem;
+      margin-bottom: 15px;
+      color: #ff6b6b;
+      text-shadow: 2px 2px #c44569;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    h1 small { display: block; font-size: 1rem; color: #f1c40f; }
+
+    #timer {
+      position: absolute;
+      top: 15px; right: 20px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #e74c3c;
+    }
+
+    #prize {
+      font-size: 2rem;
+      margin: 20px 0;
+      color: #ffd700;
+      text-shadow: 1px 1px #b8860b;
+      animation: bounce 1.5s infinite;
+    }
+    @keyframes bounce {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    #question {
+      background: linear-gradient(#2c3e50, #1a1a2e);
+      padding: 25px;
+      border-radius: 15px;
+      margin: 25px 0;
+      font-size: 1.4rem;
+      min-height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 15px rgba(255,215,0,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    #question::before {
+      content: '🍲';
+      position: absolute;
+      left: 15px;
+      font-size: 2rem;
+      animation: spin 3s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin: 25px 0;
+    }
+    .option {
+      background: linear-gradient(145deg, #34495e, #2c3e50);
+      padding: 18px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: bold;
+      font-size: 1.1rem;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid #555;
+    }
+    .option::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: 0.5s;
+    }
+    .option:hover::before { left: 100%; }
+    .option:hover { 
+      background: #e74c3c; 
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 10px 20px rgba(231,76,60,0.4);
+    }
+    .option.correct { 
+      background: #27ae60 !important; 
+      animation: correct 1s;
+    }
+    @keyframes correct {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    .option.wrong { 
+      background: #c0392b !important; 
+      animation: wrong 0.5s;
+    }
+    @keyframes wrong {
+      0%,100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    .helps {
+      display: flex;
+      justify-content: space-around;
+      margin: 25px 0;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .help-btn {
+      background: #f39c12;
+      color: #000;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 5px 15px rgba(243,156,18,0.4);
+    }
+    .help-btn:hover { background: #e67e22; transform: translateY(-3px); }
+    .help-btn.used { 
+      opacity: 0.4; 
+      cursor: not-allowed; 
+      transform: none !important;
+      background: #7f8c8d;
+    }
+
+    #streak {
+      background: #8e44ad;
+      color: #fff;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      display: inline-block;
+      margin: 10px 0;
+    }
+
+    #final {
+      display: none;
+      text-align: center;
+      animation: fadeIn 1s;
+    }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+    #restart {
+      background: #f1c40f;
+      color: #000;
+      border: none;
+      padding: 15px 30px;
+      margin-top: 25px;
+      border-radius: 50px;
+      font-size: 1.3rem;
+      cursor: pointer;
+      font-weight: bold;
+      animation: pulse 1.5s infinite;
+    }
+
+    .sound-btn {
+      position: absolute;
+      top: 15px; left: 20px;
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+
+    .effect {
+      position: absolute;
+      font-size: 3rem;
+      pointer-events: none;
+      animation: floatUp 1s forwards;
+    }
+    @keyframes floatUp {
+      to { transform: translateY(-100px); opacity: 0; }
+    }
+
+    /* Estilo do modal de cartas */
+    #cardsModal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      display: none;
+    }
+    .card-container {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 90%;
+    }
+    .card {
+      background: linear-gradient(145deg, #f39c12, #e67e22);
+      color: #000;
+      padding: 20px;
+      border-radius: 15px;
+      width: 140px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.1rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      transform: rotate(-5deg);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .card:nth-child(even) { transform: rotate(5deg); background: linear-gradient(145deg, #3498db, #2980b9); color: #fff; }
+    .card:nth-child(3n) { transform: rotate(3deg); background: linear-gradient(145deg, #2ecc71, #27ae60); color: #fff; }
+    .card:hover { transform: scale(1.1) rotate(0); z-index: 10; }
+    #closeCards { 
+      margin-top: 20px; 
+      background: #c0392b; 
+      color: #fff; 
+      padding: 10px 20px; 
+      border: none; 
+      border-radius: 50px; 
+      cursor: pointer; 
+      font-weight: bold;
+    }
+
+    /* Botão Desistir */
+    #quit {
+      background: #e74c3c;
+      color: #fff;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 5px 15px rgba(231,76,60,0.4);
+      margin-left: 10px;
+    }
+    #quit:hover { background: #c0392b; transform: translateY(-3px); }
+
+    /* Estilização do botão de retorno (back-link) */
+    .back-link {
+      position: fixed;
+      top: 18px;
+      left: 18px;
+      z-index: 120;
+      display: inline-block;
+      background: linear-gradient(45deg, var(--gold), var(--sunset));
+      color: var(--deep);
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      box-shadow: 0 8px 20px rgba(242,179,61,0.25);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+    }
+
+    .back-link:hover,
+    .back-link:focus {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(242,179,61,0.35);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+    <a class="back-link" href="index.html">← Voltar</a>
+
+<button class="sound-btn" id="sound">🔊</button>
+<div id="timer">⏰ 30</div>
+
+<div id="game">
+  <h1>🍲 JOGO DO MILHÃO <br><small>TURBO Culinária Afro-Brasileira</small></h1>
+
+  <div id="streak">🔥 Sequência: 0</div>
+
+  <div id="prize">Vale: R$ 100</div>
+
+  <div id="question"></div>
+
+  <div class="options" id="options"></div>
+
+  <div class="helps">
+    <button class="help-btn" id="fifty">🎭 50:50</button>
+    <button class="help-btn" id="skip">🚀 Pular (3)</button>
+    <button class="help-btn" id="cards">📊 Cartas</button>
+    <button class="help-btn" id="bomb">💣 Bomba!</button>
+    <button id="quit">🏃 Desistir</button>
+  </div>
+
+  <div id="final">
+    <h2 id="result"></h2>
+    <button id="restart">🔄 Jogar de Novo!</button>
+  </div>
+</div>
+
+<!-- Modal das Cartas -->
+<div id="cardsModal">
+  <div>
+    <h2 style="color:#f1c40f; text-align:center; margin-bottom:20px;">📊 Placas do Público</h2>
+    <div class="card-container" id="cardsContainer"></div>
+    <button id="closeCards">Fechar</button>
+  </div>
+</div>
+
+<p style="text-align: center; font-size: 0.8rem; color: #f1c40f; margin-top: 20px;">Criado por Dominyk e Olivia 8ºB Colégio Campina da Lagoa</p>
+
+<script>
+  const sounds = {
+    correct: '✅',
+    wrong: '❌',
+    win: '🏆',
+    money: '💰',
+    bomb: '💥',
+    skip: '🚀'
+  };
+
+  const questions = [
+    { q: "Qual é o principal ingrediente do acarajé?", a: "Feijão-fradinho", o: ["Arroz", "Feijão-fradinho", "Mandioquinha", "Batata"], p: 100 },
+    { q: "O vatapá leva qual tipo de leite?", a: "Leite de coco", o: ["Leite de vaca", "Leite de amêndoas", "Leite de coco", "Leite de soja"], p: 200 },
+    { q: "Qual estado brasileiro é famoso pelo acarajé?", a: "Bahia", o: ["Rio de Janeiro", "Bahia", "Minas Gerais", "Pernambuco"], p: 300 },
+    { q: "O que é 'dendê'?", a: "Óleo de palma", o: ["Tipo de peixe", "Óleo de palma", "Fruta seca", "Tempero em pó"], p: 500 },
+    { q: "O caruru é feito principalmente com:", a: "Quiabo", o: ["Jiló", "Quiabo", "Chuchu", "Abobrinha"], p: 1000 },
+    { q: "Qual prato é oferecido a Oxalá nas festas de candomblé?", a: "Canjica branca", o: ["Feijoada", "Canjica branca", "Moqueca", "Abará"], p: 5000 },
+    { q: "O 'efó' é um prato típico de qual região?", a: "Bahia", o: ["São Paulo", "Bahia", "Amazonas", "Ceará"], p: 10000 },
+    { q: "Qual a origem africana do acarajé?", a: "Iorubá", o: ["Banto", "Iorubá", "Fon", "Angolana"], p: 20000 },
+    { q: "O 'abará' é parecido com o acarajé, mas é:", a: "Cozido no vapor", o: ["Frito", "Assado", "Cozido no vapor", "Cru"], p: 30000 },
+    { q: "Qual é o nome do bolo de origem africana feito com milho verde?", a: "Pamonha", o: ["Bolo de rolo", "Pamonha", "Quindim", "Bolo de aipim"], p: 50000 },
+    { q: "O 'xinxim de galinha' tem origem em qual grupo africano?", a: "Iorubá", o: ["Banto", "Fon", "Iorubá", "Hauçá"], p: 100000 },
+    { q: "Qual o nome do prato feito com feijão, farinha e carne seca, típico do Recôncavo?", a: "Feijão-de-leite", o: ["Feijão-tropeiro", "Feijão-de-leite", "Virado à paulista", "Arroz de cuxá"], p: 200000 },
+    { q: "O 'sarapatel' tem influência de qual país africano?", a: "Angola", o: ["Nigéria", "Angola", "Gana", "Moçambique"], p: 300000 },
+    { q: "Qual o nome do doce feito com coco e açúcar queimado, de origem africana?", a: "Cocada", o: ["Quindim", "Cocada", "Brigadeiro", "Doce de leite"], p: 500000 },
+    { q: "No candomblé, qual orixá recebe oferendas de acarajé?", a: "Iansã", o: ["Oxum", "Iemanjá", "Iansã", "Xangô"], p: 1000000 }
+  ];
+
+  let current = 0;
+  let skips = 3;
+  let usedFifty = usedCards = usedBomb = false;
+  let prize = 0;
+  let streak = 0;
+  let timer = 30;
+  let timerInterval;
+  let soundOn = true;
+
+  const prizeValues = [0,100,200,300,500,1000,5000,10000,20000,30000,50000,100000,200000,300000,500000,1000000];
+  const safePoints = [0, 1000, 50000];
+
+  const qEl = document.getElementById('question');
+  const oEl = document.getElementById('options');
+  const prizeEl = document.getElementById('prize');
+  const finalEl = document.getElementById('final');
+  const resultEl = document.getElementById('result');
+  const streakEl = document.getElementById('streak');
+  const timerEl = document.getElementById('timer');
+  const cardsModal = document.getElementById('cardsModal');
+  const cardsContainer = document.getElementById('cardsContainer');
+
+  function createConfetti() {
+    if (!soundOn) return;
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random() * 100 + 'vw';
+    c.style.background = ['#f1c40f','#e74c3c','#3498db','#2ecc71'][Math.floor(Math.random()*4)];
+    c.style.animationDuration = (Math.random() * 3 + 2) + 's';
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 5000);
+  }
+
+  function floatEffect(emoji, color = '#fff') {
+    if (!soundOn) return;
+    const e = document.createElement('div');
+    e.className = 'effect';
+    e.textContent = emoji;
+    e.style.color = color;
+    e.style.left = Math.random() * 80 + 10 + '%';
+    e.style.top = '50%';
+    document.body.appendChild(e);
+    setTimeout(() => e.remove(), 1000);
+  }
+
+  function startGame() {
+    current = 0; skips = 3; streak = 0;
+    usedFifty = usedCards = usedBomb = false;
+    document.querySelectorAll('.help-btn').forEach(b=>b.classList.remove('used'));
+    document.getElementById('quit').style.display = 'flex';
+    streakEl.textContent = '🔥 Sequência: 0';
+    finalEl.style.display = 'none';
+    cardsModal.style.display = 'none';
+    loadQuestion();
+  }
+
+  function startTimer() {
+    timer = 30;
+    timerEl.textContent = `⏰ ${timer}`;
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      timer--;
+      timerEl.textContent = `⏰ ${timer}`;
+      if (timer <= 10) timerEl.style.color = '#e74c3c';
+      if (timer <= 0) {
+        floatEffect(sounds.wrong, '#c0392b');
+        endGame(false);
+      }
+    }, 1000);
+  }
+
+  function loadQuestion() {
+    if (current >= questions.length) { endGame(true); return; }
+    const q = questions[current];
+    prizeEl.innerHTML = `Vale: R$ ${q.p.toLocaleString()}`;
+    qEl.textContent = q.q;
+    oEl.innerHTML = '';
+    q.o.forEach((opt, i) => {
+      const div = document.createElement('div');
+      div.className = 'option';
+      div.innerHTML = `<strong>${String.fromCharCode(65+i)})</strong> ${opt}`;
+      div.onclick = () => selectOption(opt, div);
+      oEl.appendChild(div);
+    });
+    startTimer();
+  }
+
+  function selectOption(selected, el) {
+    clearInterval(timerInterval);
+    if (el.classList.contains('correct') || el.classList.contains('wrong')) return;
+    const q = questions[current];
+    const correct = q.a;
+    const opts = oEl.children;
+
+    for (let opt of opts) {
+      opt.style.pointerEvents = 'none';
+      if (opt.textContent.includes(correct)) opt.classList.add('correct');
+      else if (opt === el) opt.classList.add('wrong');
+    }
+
+    setTimeout(() => {
+      if (selected === correct) {
+        prize = q.p;
+        streak++;
+        streakEl.textContent = `🔥 Sequência: ${streak}x`;
+        floatEffect(streak >= 3 ? sounds.win : sounds.correct, '#27ae60');
+        for(let i=0; i<15; i++) setTimeout(createConfetti, i*100);
+        if (streak % 3 === 0) floatEffect('💰 +BONUS!', '#f1c40f');
+        current++;
+        setTimeout(loadQuestion, 2000);
+      } else {
+        streak = 0;
+        streakEl.textContent = '🔥 Sequência: 0';
+        floatEffect(sounds.wrong, '#c0392b');
+        endGame(false);
+      }
+    }, 1800);
+  }
+
+  function endGame(win) {
+    clearInterval(timerInterval);
+    document.getElementById('quit').style.display = 'none';
+    let won = prize;
+    if (!win) won = safePoints.find(p => p <= prize) || 0;
+    
+    const msg = win 
+      ? `<span style="color:#27ae60">🎉 PARABÉNS! ${sounds.win}<br>Você ganhou <strong>R$ ${won.toLocaleString()}</strong>!</span>`
+      : `<span style="color:#c0392b">😭 Errou! ${sounds.wrong}<br>Mas levou <strong>R$ ${won.toLocaleString()}</strong>!</span>`;
+    
+    resultEl.innerHTML = msg;
+    finalEl.style.display = 'block';
+    for(let i=0; i<30; i++) setTimeout(createConfetti, i*80);
+  }
+
+  // 50:50
+  document.getElementById('fifty').onclick = () => {
+    if (usedFifty) return;
+    usedFifty = true;
+    document.getElementById('fifty').classList.add('used');
+    const q = questions[current];
+    const wrong = q.o.filter(o => o !== q.a);
+    const toRemove = wrong.sort(() => 0.5 - Math.random()).slice(0, 2);
+    oEl.querySelectorAll('.option').forEach(el => {
+      if (toRemove.some(r => el.textContent.includes(r))) {
+        el.style.visibility = 'hidden';
+        el.style.pointerEvents = 'none';
+      }
+    });
+    floatEffect('🎭', '#9b59b6');
+  };
+
+  // Pular
+  document.getElementById('skip').onclick = () => {
+    if (skips <= 0) return;
+    skips--;
+    document.getElementById('skip').innerHTML = `🚀 Pular (${skips})`;
+    if (skips === 0) document.getElementById('skip').classList.add('used');
+    clearInterval(timerInterval);
+    floatEffect(sounds.skip, '#3498db');
+    current++;
+    loadQuestion();
+  };
+
+  // CARTAS
+  document.getElementById('cards').onclick = () => {
+    if (usedCards) return;
+    usedCards = true;
+    document.getElementById('cards').classList.add('used');
+
+    const q = questions[current];
+    const percentages = [75, 15, 8, 2];
+    const letters = ['A','B','C','D'];
+    const correctIdx = q.o.indexOf(q.a);
+    const shuffled = [...percentages];
+    shuffled[correctIdx] = percentages[0];
+
+    cardsContainer.innerHTML = '';
+    q.o.forEach((opt, i) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div style="font-size:1.4rem; margin-bottom:8px;">${letters[i]}</div>
+        <div style="font-size:0.9rem; margin:5px 0;">${opt}</div>
+        <div style="font-size:1.8rem; font-weight:bold; color:${i===correctIdx?'#27ae60':'#fff'}">
+          ${shuffled[i]}%
+        </div>
+      `;
+      cardsContainer.appendChild(card);
+    });
+
+    cardsModal.style.display = 'flex';
+    floatEffect('📊', '#2ecc71');
+  };
+
+  document.getElementById('closeCards').onclick = () => {
+    cardsModal.style.display = 'none';
+  };
+
+  // Bomba
+  document.getElementById('bomb').onclick = () => {
+    if (usedBomb) return;
+    usedBomb = true;
+    document.getElementById('bomb').classList.add('used');
+    const q = questions[current];
+    const wrong = q.o.filter(o => o !== q.a);
+    const toBomb = wrong[Math.floor(Math.random() * wrong.length)];
+    oEl.querySelectorAll('.option').forEach(el => {
+      if (el.textContent.includes(toBomb)) {
+        el.innerHTML = `<strike>${el.innerHTML}</strike> ${sounds.bomb}`;
+        el.style.opacity = '0.5';
+        el.style.pointerEvents = 'none';
+      }
+    });
+    floatEffect(sounds.bomb, '#e67e22');
+  };
+
+  // DESISTIR
+  document.getElementById('quit').onclick = () => {
+    clearInterval(timerInterval);
+    const won = prize;
+    resultEl.innerHTML = `<span style="color:#f1c40f">🏃 Você desistiu!<br>Levou para casa: <strong>R$ ${won.toLocaleString()}</strong></span>`;
+    finalEl.style.display = 'block';
+    document.getElementById('quit').style.display = 'none';
+    for(let i=0; i<20; i++) setTimeout(createConfetti, i*100);
+    floatEffect('💸', '#f1c40f');
+  };
+
+  // Som
+  document.getElementById('sound').onclick = () => {
+    soundOn = !soundOn;
+    document.getElementById('sound').textContent = soundOn ? '🔊' : '🔇';
+  };
+
+  document.getElementById('restart').onclick = startGame;
+
+  startGame();
+</script>
+
+</body>
+</html>
