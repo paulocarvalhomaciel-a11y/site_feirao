@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Jogo do Milhão TURBO - Culinária Afro-Brasileira</title>
+  <title>Quiz Culinário Cultura Afro-Brasileira</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Roboto:wght@700&display=swap');
 
@@ -218,7 +218,7 @@
 
     .sound-btn {
       position: absolute;
-      top: 15px; left: 20px;
+      top: 595px; left: 20px;
       background: none;
       border: none;
       font-size: 1.8rem;
@@ -325,36 +325,64 @@
       box-shadow: 0 12px 30px rgba(242,179,61,0.35);
       opacity: 1;
     }
+
+    #play-btn {
+      background: #f1c40f;
+      color: #000;
+      border: none;
+      padding: 15px 30px;
+      margin-top: 25px;
+      border-radius: 50px;
+      font-size: 1.3rem;
+      cursor: pointer;
+      font-weight: bold;
+      animation: pulse 1.5s infinite;
+    }
+
+    .creators {
+      position: fixed;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%) rotate(90deg);
+      font-size: 0.8rem;
+      color: #f1c40f;
+      white-space: nowrap;
+    }
   </style>
 </head>
 <body>
     <a class="back-link" href="index.html">← Voltar</a>
 
 <button class="sound-btn" id="sound">🔊</button>
-<div id="timer">⏰ 30</div>
+<div id="timer" style="display: none;">⏰ 30</div>
 
 <div id="game">
-  <h1>🍲 JOGO DO MILHÃO <br><small>TURBO Culinária Afro-Brasileira</small></h1>
-
-  <div id="streak">🔥 Sequência: 0</div>
-
-  <div id="prize">Vale: R$ 100</div>
-
-  <div id="question"></div>
-
-  <div class="options" id="options"></div>
-
-  <div class="helps">
-    <button class="help-btn" id="fifty">🎭 50:50</button>
-    <button class="help-btn" id="skip">🚀 Pular (3)</button>
-    <button class="help-btn" id="cards">📊 Cartas</button>
-    <button class="help-btn" id="bomb">💣 Bomba!</button>
-    <button id="quit">🏃 Desistir</button>
+  <div id="start-screen">
+    <h1>🍲 Quiz Culinário <br><small> Cultura Afro-Brasileira</small></h1>
+    <button id="play-btn">Iniciar Jogo</button>
   </div>
 
-  <div id="final">
-    <h2 id="result"></h2>
-    <button id="restart">🔄 Jogar de Novo!</button>
+  <div id="game-content" style="display: none;">
+    <div id="streak">🔥 Sequência: 0</div>
+
+    <div id="prize">Vale: pontos 100</div>
+
+    <div id="question"></div>
+
+    <div class="options" id="options"></div>
+
+    <div class="helps">
+      <button class="help-btn" id="fifty">🎭 50:50</button>
+      <button class="help-btn" id="skip">🚀 Pular (3)</button>
+      <button class="help-btn" id="cards">📊 Cartas</button>
+      <button class="help-btn" id="bomb">💣 Bomba!</button>
+      <button id="quit">🏃 Desistir</button>
+    </div>
+
+    <div id="final">
+      <h2 id="result"></h2>
+      <button id="restart">🔄 Jogar de Novo!</button>
+    </div>
   </div>
 </div>
 
@@ -367,7 +395,9 @@
   </div>
 </div>
 
-<p style="text-align: center; font-size: 0.8rem; color: #f1c40f; margin-top: 20px;">Criado por Dominyk e Olivia 8ºB Colégio Campina da Lagoa</p>
+<div class="creators">Criado por Dominyk e Olivia 8ºB Colégio Campina da Lagoa</div>
+
+<audio id="bg-music" loop src="music/rio_samba.mp3"></audio>
 
 <script>
   const sounds = {
@@ -450,6 +480,8 @@
     streakEl.textContent = '🔥 Sequência: 0';
     finalEl.style.display = 'none';
     cardsModal.style.display = 'none';
+    timerEl.style.display = 'block';
+    if(soundOn) document.getElementById('bg-music').play();
     loadQuestion();
   }
 
@@ -471,7 +503,7 @@
   function loadQuestion() {
     if (current >= questions.length) { endGame(true); return; }
     const q = questions[current];
-    prizeEl.innerHTML = `Vale: R$ ${q.p.toLocaleString()}`;
+    prizeEl.innerHTML = `Pontos:  ${q.p.toLocaleString()}`;
     qEl.textContent = q.q;
     oEl.innerHTML = '';
     q.o.forEach((opt, i) => {
@@ -524,7 +556,7 @@
     
     const msg = win 
       ? `<span style="color:#27ae60">🎉 PARABÉNS! ${sounds.win}<br>Você ganhou <strong>R$ ${won.toLocaleString()}</strong>!</span>`
-      : `<span style="color:#c0392b">😭 Errou! ${sounds.wrong}<br>Mas levou <strong>R$ ${won.toLocaleString()}</strong>!</span>`;
+      : `<span style="color:#c0392b">😭 Errou! ${sounds.wrong}<br></span>`;
     
     resultEl.innerHTML = msg;
     finalEl.style.display = 'block';
@@ -628,11 +660,25 @@
   document.getElementById('sound').onclick = () => {
     soundOn = !soundOn;
     document.getElementById('sound').textContent = soundOn ? '🔊' : '🔇';
+    const music = document.getElementById('bg-music');
+    if(soundOn){
+      music.play();
+    } else {
+      music.pause();
+    }
   };
 
-  document.getElementById('restart').onclick = startGame;
+  document.getElementById('restart').onclick = () => {
+    document.getElementById('final').style.display = 'none';
+    document.getElementById('start-screen').style.display = 'block';
+    document.getElementById('bg-music').pause();
+  };
 
-  startGame();
+  document.getElementById('play-btn').onclick = () => {
+    document.getElementById('start-screen').style.display = 'none';
+    document.getElementById('game-content').style.display = 'block';
+    startGame();
+  };
 </script>
 
 </body>

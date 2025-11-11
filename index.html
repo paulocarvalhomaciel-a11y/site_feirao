@@ -53,6 +53,51 @@
         @media (max-width:640px){
             #games-menu { right: 0; left: auto; min-width: 180px; }
         }
+
+        /* NOVO: Estilo do painel com imagem ao lado do texto */
+        .timeline-panel {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        .timeline-panel img {
+            width: 180px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            flex-shrink: 0;
+        }
+        .timeline-panel .text-content {
+            flex: 1;
+            min-width: 280px;
+        }
+        .timeline-panel .text-content h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1.4rem;
+            color: var(--gold);
+        }
+        .timeline-panel .text-content p {
+            margin: 0;
+            line-height: 1.6;
+        }
+        @media (max-width: 640px) {
+            .timeline-panel {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .timeline-panel img {
+                width: 100%;
+                max-width: 300px;
+                height: auto;
+            }
+        }
     </style>
 </head>
 <body>
@@ -61,8 +106,7 @@
         <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="#history">História</a></li>
-            <li><a href="#folklore">Folclore</a></li>
-            <!--<li><a href="#contact">Contato</a></li>-->
+            <li><a href="folclore-afro.html">Folclore</a></li>
 
             <!-- CHANGED: Games dropdown -->
             <li class="nav-games">
@@ -80,30 +124,22 @@
     <header>
         <div class="banner">
             <figure>
-                <!-- Imagem de cabeçalho (substitui o logo) -->
                 <img class="header-image" src="assets/images/header.png" alt="Imagem de cabeçalho representando a cultura brasileira" loading="lazy">
 
-                <!-- Overlay centralizado: textos alternando entre português e iorubá -->
                 <div class="header-overlay" role="region" aria-label="Cultura Afro / Aṣà Áfríkà" tabindex="0">
                     <span class="overlay-text lang-pt">Cultura Afro</span>
                     <span class="overlay-text lang-yo" aria-hidden="true">Aṣà Áfríkà</span>
                 </div>
-                
-                <!-- Removido <picture> externo que falhou no carregamento.
-                     Se desejar suporte WebP local, coloque assets/images/header.webp e reintroduza um <picture> apontando para esse arquivo. -->
             </figure>
          </div>
      </header>
     
     <main id="main">
-        <!-- título principal removido conforme solicitado -->
-        <!-- Introdução enxuta -->
         <p class="lead">Explore marcos históricos e a influência do patrimônio afro‑brasileiro e do folclore afro no Brasil. Clique em uma data para ver o acontecimento.</p>
 
-        <!-- Linha do tempo: barra de rolagem horizontal com anos -->
+        <!-- Linha do tempo -->
         <section class="timeline" aria-label="Linha do tempo histórica">
             <div class="timeline-track" role="listbox" aria-label="Anos importantes">
-                <!-- cada item carrega data-year e data-title; o texto detalhado aparece no painel -->
                 <button class="timeline-item" role="option" aria-pressed="false" data-year="1500" data-title="Chegada dos portugueses">1500</button>
                 <button class="timeline-item" role="option" aria-pressed="false" data-year="1530" data-title="Início do tráfico de africanos">1530</button>
                 <button class="timeline-item" role="option" aria-pressed="false" data-year="1808" data-title="Formação de terreiros e práticas afro">1808</button>
@@ -117,49 +153,34 @@
                 <button class="timeline-item" role="option" aria-pressed="false" data-year="2030" data-title="Expectativas de reparação e preservação">2030</button>
             </div>
 
+            <!-- Painel com imagem ao lado do texto -->
             <div class="timeline-panel" aria-live="polite" aria-atomic="true">
-                <h3 id="timeline-title">Selecione uma data</h3>
-                <p id="timeline-desc">Clique em uma data na linha do tempo para ver o acontecimento correspondente.</p>
+                <img id="timeline-image" src="" alt="" loading="lazy" style="display:none;">
+                <div class="text-content">
+                    <h3 id="timeline-title">Selecione uma data</h3>
+                    <p id="timeline-desc">Clique em uma data na linha do tempo para ver o acontecimento correspondente.</p>
+                </div>
             </div>
         </section>
     </main>
     
-    <!-- Placeholders para outras seções -->
     <section id="history">
         <h2>História</h2>
         <p>Placeholder para a seção de História. Aqui virão detalhes sobre a colonização e miscigenação.</p>
     </section>
     
-    <section id="folklore">
+    <!--<section id="folklore">
         <h2>Folclore</h2>
         <p>Placeholder para a seção de Folclore. Aqui virão lendas e mitos brasileiros.</p>
-    </section>
-    
-    <section id="contact">
-        <!--<h2>Contato</h2>
-        <p>Envie sua sugestão ou contribuição sobre lendas e histórias.</p>
-        <form id="contactForm" action="#" method="post" novalidate>
-            <label for="name">Nome</label>
-            <input id="name" name="name" type="text" required>
-
-            <label for="email">E‑mail</label>
-            <input id="email" name="email" type="email" required>
-
-            <label for="message">Mensagem</label>
-            <textarea id="message" name="message" rows="5" required></textarea>
-
-            <button type="submit">Enviar</button>
-            <p class="form-note">Este formulário é de exemplo; sem backend configurado.</p>
-        </form>
     </section>-->
     
     <footer>
-        <p>&copy; <span id="year">2025</span> Folclore Brasileiro. Todos os direitos reservados.</p>
+        <p>© <span id="year">2025</span> Folclore Brasileiro. Todos os direitos reservados.</p>
     </footer>
 
-    <!-- Script principal: movido para arquivo separado -->
+    <!-- Script principal -->
     <script src="assets/js/main.js" defer></script>
-    <!-- ADDED: script para togglar o menu Games de forma acessível -->
+    <!-- Script do menu Games -->
     <script>
         (function(){
             const btn = document.getElementById('games-button');
@@ -177,16 +198,13 @@
                 if (menu.getAttribute('aria-hidden') === 'true') openMenu(); else closeMenu();
             }
 
-            // abrir ao clicar / tocar
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 toggleMenu();
             });
-            // fechar ao clicar fora
             document.addEventListener('click', (e) => {
                 if (!menu.contains(e.target) && e.target !== btn) closeMenu();
             });
-            // fechar com Esc e navegar com teclado
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') closeMenu();
                 if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && menu.getAttribute('aria-hidden') === 'true') {
@@ -194,13 +212,58 @@
                     e.preventDefault();
                 }
             });
-            // permitir tab dentro do menu; se foco sair, fechar
             menu.addEventListener('focusout', (e) => {
-                // se o novo foco não está no menu nem no botão, fecha
                 const newFocus = e.relatedTarget;
                 if (!menu.contains(newFocus) && newFocus !== btn) closeMenu();
             });
         })();
+    </script>
+
+    <!-- NOVO: Script para exibir imagem ao lado do texto -->
+    <script>
+        // Mapeamento: ano → {src, alt}
+        const IMAGES = {
+            '1500': { src: 'assets/images/1500.png', alt: 'Ilustração da chegada de Pedro Álvares Cabral em 1500, com portugueses e indígenas na praia.' },
+            '1530': { src: 'assets/images/1530-trafico-nordeste.jpg', alt: 'Mercado de escravos no Recife, com africanos acorrentados sendo vendidos por portugueses.' },
+            '1808': { src: 'assets/images/1808-terreiros.jpg', alt: 'Formação de terreiros de candomblé no Rio de Janeiro após a chegada da corte portuguesa.' },
+            '1888': { src: 'assets/images/1888-abolicao.jpg', alt: 'Assinatura da Lei Áurea em 1888, libertando os últimos escravizados no Brasil.' },
+            '1930': { src: 'assets/images/1930-samba.jpg', alt: 'Escolas de samba no Rio de Janeiro nos anos 1930, com desfile na Praça XI.' },
+            '1960': { src: 'assets/images/1960-capoeira.jpg', alt: 'Roda de capoeira em Salvador, reconhecida como esporte em 1960.' },
+            '1988': { src: 'assets/images/1988-constituicao.jpg', alt: 'Constituição de 1988 garantindo direitos culturais e territoriais quilombolas.' },
+            '2000': { src: 'assets/images/2000-patrimonio.jpg', alt: 'Registro do Samba de Roda do Recôncavo como patrimônio imaterial em 2005.' },
+            '2010': { src: 'assets/images/2010-consciencia-negra.jpg', alt: 'Manifestação no Dia da Consciência Negra, instituído nacionalmente em 2011.' },
+            '2020': { src: 'assets/images/2020-ativismo-digital.jpg', alt: 'Ativistas afro-brasileiros usando redes sociais para preservar cultura.' },
+            '2030': { src: 'assets/images/2030-futuro.jpg', alt: 'Projeção de políticas de reparação e preservação cultural afro-brasileira.' }
+        };
+
+        // Atualiza painel (chamado pelo main.js)
+        window.updateTimelinePanel = function(year, title, desc) {
+            const panelTitle = document.getElementById('timeline-title');
+            const panelDesc = document.getElementById('timeline-desc');
+            const imgEl = document.getElementById('timeline-image');
+
+            panelTitle.textContent = `${year} — ${title}`;
+            panelDesc.textContent = desc;
+
+            const imgData = IMAGES[year] || null;
+            if (imgData) {
+                imgEl.src = imgData.src;
+                imgEl.alt = imgData.alt;
+                imgEl.style.display = 'block';
+            } else {
+                imgEl.style.display = 'none';
+            }
+        };
+
+        // Fallback: se main.js não carregar, ainda funciona
+        document.querySelectorAll('.timeline-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const year = item.getAttribute('data-year');
+                const title = item.getAttribute('data-title') || year;
+                const desc = window.TIMELINE_DATA?.[year] || 'Descrição não disponível.';
+                window.updateTimelinePanel?.(year, title, desc);
+            });
+        });
     </script>
 </body>
 </html>

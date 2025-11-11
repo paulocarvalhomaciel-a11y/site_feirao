@@ -185,20 +185,53 @@ section {
 
 /* Painel que mostra o evento */
 .timeline-panel {
-	padding: 0.85rem;
-	border-radius: 10px;
+	display: flex;
+	gap: 1.5rem;
+	align-items: flex-start;
+	padding: 1.5rem;
 	background: rgba(255,255,255,0.98);
+	border-radius: 12px;
 	border: 1px solid rgba(115,48,9,0.06);
 	box-shadow: 0 8px 24px rgba(115,48,9,0.06);
+	flex-wrap: wrap;
 }
-.timeline-panel h3 {
-	margin: 0 0 0.4rem 0;
+.timeline-panel img {
+	width: 300px;           /* ← TAMANHO PADRÃO PARA TODAS AS IMAGENS */
+	height: 200px;          /* ← TAMANHO PADRÃO PARA TODAS AS IMAGENS */
+	object-fit: cover;
+	border-radius: 8px;
+	box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+	flex-shrink: 0;
+	display: none;          /* oculto até ser carregado via JS */
+}
+.timeline-panel .text-content {
+	flex: 1;
+	min-width: 280px;
+}
+.timeline-panel .text-content h3 {
+	margin: 0 0 0.5rem;
+	font-size: 1.4rem;
 	color: var(--p-4);
-	font-size: 1.05rem;
 }
-.timeline-panel p {
+.timeline-panel .text-content p {
 	margin: 0;
+	line-height: 1.6;
 	color: var(--muted);
+}
+
+/* Responsivo: em telas pequenas, imagem ocupa 100% */
+@media (max-width: 640px) {
+	.timeline-panel {
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+	.timeline-panel img {
+		width: 100%;
+		max-width: 300px;
+		height: auto;
+		display: block;
+	}
 }
 
 /* Formulário */
