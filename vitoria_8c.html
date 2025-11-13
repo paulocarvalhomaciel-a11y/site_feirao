@@ -407,6 +407,42 @@
             transform: scale(1.08);
         }
 
+        /* NOVO: Estilização do botão de retorno (back-link) */
+        .back-link {
+            position: fixed;
+            top: 18px;
+            left: 18px;
+            z-index: 120;
+            display: inline-block;
+            background: linear-gradient(45deg, var(--gold), var(--sun));
+            color: var(--earth);
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 0.95rem;
+            box-shadow: 0 8px 20px rgba(242,179,61,0.25);
+            transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+        }
+
+        /* Hover / focus */
+        .back-link:hover,
+        .back-link:focus {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(242,179,61,0.35);
+            opacity: 1;
+        }
+
+        /* versão compacta em telas pequenas */
+        @media (max-width:480px) {
+            .back-link {
+                top: 12px;
+                left: 12px;
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+        }
+
         .progress-bar {
             height: 12px;
             background: rgba(255,255,255,0.25);
@@ -458,6 +494,8 @@
     </style>
 </head>
 <body>
+    <a class="back-link" href="index.html">← Voltar</a>
+    
     <div class="african-pattern"></div>
     
     <div id="quiz-container">
