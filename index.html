@@ -70,48 +70,143 @@
             .school-name { display: none; } /* Esconde o nome da escola em telas pequenas */
         }
 
-        /* NOVO: Estilo do painel com imagem ao lado do texto */
-        .timeline-panel {
+
+
+        /* NOVO: Estilos para a seção de história */
+        #history {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+
+        #history h2 {
+            color: #733009;
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .history-content h3 {
+            color: #733009;
+            font-size: 1.8rem;
+            margin: 2rem 0 1rem;
+            border-bottom: 3px solid rgba(242, 179, 61, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .history-content h4 {
+            color: #733009;
+            font-size: 1.4rem;
+            margin: 1.5rem 0 0.8rem;
+        }
+
+        .history-content p {
+            line-height: 1.8;
+            margin-bottom: 1.2rem;
+            text-align: justify;
+            color: #444;
+        }
+
+        .history-content ul {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+
+        .history-content li {
+            margin-bottom: 0.8rem;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        .history-content strong {
+            color: #733009;
+            font-weight: 700;
+        }
+
+        .timeline-events {
+            display: grid;
+            gap: 1.5rem;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border-left: 5px solid #F29727;
+        }
+
+        .event {
             display: flex;
             gap: 1.5rem;
             align-items: flex-start;
-            padding: 1.5rem;
+            padding: 1rem;
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            margin-top: 1rem;
-            flex-wrap: wrap;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .timeline-panel img {
-            width: 180px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+
+        .event:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15);
+        }
+
+        .event .year {
+            background: linear-gradient(45deg, #F2B33D, #F29727);
+            color: #401201;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(242, 179, 61, 0.3);
             flex-shrink: 0;
         }
-        .timeline-panel .text-content {
-            flex: 1;
-            min-width: 280px;
-        }
-        .timeline-panel .text-content h3 {
-            margin: 0 0 0.5rem;
-            font-size: 1.4rem;
-            color: var(--gold);
-        }
-        .timeline-panel .text-content p {
+
+        .event p {
             margin: 0;
-            line-height: 1.6;
+            flex: 1;
+            color: #555;
         }
-        @media (max-width: 640px) {
-            .timeline-panel {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
+
+        .conclusion {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 5px solid #F2B33D;
+            font-style: italic;
+            font-weight: 500;
+            margin-top: 2rem;
+            color: #444;
+        }
+
+        @media (max-width: 768px) {
+            #history {
+                margin: 2rem 1rem;
+                padding: 1.5rem;
             }
-            .timeline-panel img {
-                width: 100%;
-                max-width: 300px;
-                height: auto;
+            
+            #history h2 {
+                font-size: 2rem;
+            }
+            
+            .history-content h3 {
+                font-size: 1.5rem;
+            }
+            
+            .event {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .event .year {
+                align-self: flex-start;
+            }
+            
+            .timeline-events {
+                padding: 1rem;
             }
         }
     </style>
@@ -131,7 +226,7 @@
                     <li role="none"><a role="menuitem" href="vitoria_8c.html">RITMOS ANCESTRAIS 8°C</a></li>
                     <li role="none"><a role="menuitem" href="jogo1.html">EM CONSTRUÇÃO 8ºB</a></li>
                     <li role="none"><a role="menuitem" href="culinaria.html">QUIZ CULINÁRIO 8ºB</a></li>
-                    <li role="none"><a role="menuitem" href="maracatu-memory.html">EM CONSTRUÇÃO 8ºA</a></li>
+                    <li role="none"><a role="menuitem" href="Davi_8A.html">JOGO DO DAVI 8ºA</a></li>
                 </ul>
             </li>
             
@@ -154,40 +249,83 @@
      </header>
     
     <main id="main">
-        <p class="lead">Explore marcos históricos e a influência do patrimônio afro‑brasileiro e do folclore afro no Brasil. Clique em uma data para ver o acontecimento.</p>
-
-        <!-- Linha do tempo -->
-        <section class="timeline" aria-label="Linha do tempo histórica">
-            <div class="timeline-track" role="listbox" aria-label="Anos importantes">
-                <button class="timeline-item" role="option" aria-pressed="false" data-year="1500" data-title="Chegada dos portugueses">1500</button>
-                <button class="timeline-item" role="option" aria-pressed="false" data-year="1530" data-title="Início do tráfico de africanos">1530</button>
-                <button class="timeline-item" role="option" aria-pressed="false" data-year="1808" data-title="Formação do quilombo dos palmares">1600</button>
-                <button class="timeline-item" role="option" aria-pressed="false" data-year="1888" data-title="Execução de Zumbi – Dia da Consciência Negra">1695</button>
-                <button class="timeline-item" role="option" aria-pressed="false" data-year="1930" data-title="Irmandades Negras (Rosário, Boa Morte)">1700</button>
-                <button class="timeline-item" role="option" aria-pressed="false" data-year="1960" data-title="Pico do tráfico banto (Angola/Moçambique)">1807-1835</button>
-                <button class="timeline-item" role="option" aria-pressed="false" data-year="2000" data-title="Origem do carnaval afro em Bahia e RJ">1830</button>
-                <button class="timeline-item" role="option" aria-pressed="false" data-year="2010" data-title="Lei Áurea – Abolição da Escravatura">1888</button>
-                <button class="timeline-item" role="option" aria-pressed="false" data-year="2020" data-title="Frente Negra Brasileira (FNB)">1931</button>
-                <button class="timeline-item" role="option" aria-pressed="false" data-year="2030" data-title="Capoeira reconhecida como esporte nacional">1953</button>
-                <button class="timeline-item" role="option" aria-pressed="false" data-year="2030" data-title="Blocos afros: Ilê Aiyê e Olodum">1970</button>
-                <button class="timeline-item" role="option" aria-pressed="false" data-year="2030" data-title="Ensino obrigatório de cultura afro">2003</button>
-                <button class="timeline-item" role="option" aria-pressed="false" data-year="2030" data-title="20 de novembro - feriado nacional">2023</button>
-            </div>
-
-            <!-- Painel com imagem ao lado do texto -->
-            <div class="timeline-panel" aria-live="polite" aria-atomic="true">
-                <img id="timeline-image" src="" alt="" loading="lazy" style="display:none;">
-                <div class="text-content">
-                    <h3 id="timeline-title">Selecione uma data</h3>
-                    <p id="timeline-desc">Clique em uma data na linha do tempo para ver o acontecimento correspondente.</p>
-                </div>
-            </div>
-        </section>
     </main>
     
     <section id="history">
-        <h2>História</h2>
-        <p>Placeholder para a seção de História. Aqui virão detalhes sobre a colonização e miscigenação.</p>
+        <h2>História da Cultura Afro-Brasileira</h2>
+        
+        <div class="history-content">
+            <h3>Da África a Pindorama: Uma Jornada de Resistência</h3>
+            
+            <p>A cultura afro-brasileira tem suas raízes profundas nas diversas etnias africanas que foram forçadamente trazidas para o Brasil durante o período colonial. Entre os séculos XVI e XIX, aproximadamente 4 milhões de africanos foram transportados para Pindorama (nome indígena para o Brasil), principalmente das regiões da África Ocidental e Central.</p>
+
+            <h4>As Origens Africanas</h4>
+            <p>Os povos africanos trazidos ao Brasil pertenciam principalmente aos grupos:</p>
+            <ul>
+                <li><strong>Bantos:</strong> vindos de Angola, Congo e Moçambique, trouxeram tradições musicais como o samba e instrumentos como o berimbau</li>
+                <li><strong>Sudaneses:</strong> originários da África Ocidental (atuais Nigéria, Benin, Gana), contribuíram com religiões como o candomblé e práticas culturais iorubás</li>
+                <li><strong>Malês:</strong> muçulmanos alfabetizados que mantiveram tradições islâmicas e organizaram revoltas, como a dos Malês em 1835</li>
+            </ul>
+
+            <h4>Resistência e Preservação Cultural</h4>
+            <p>Mesmo sob a brutalidade da escravidão, os africanos e seus descendentes conseguiram preservar e recriar suas tradições culturais:</p>
+            <ul>
+                <li><strong>Religiosidade:</strong> sincretismo entre orixás africanos e santos católicos, criando o candomblé, umbanda e outras manifestações</li>
+                <li><strong>Música e Dança:</strong> desenvolvimento do samba, capoeira, jongo, maracatu e outras expressões artísticas</li>
+                <li><strong>Culinária:</strong> introdução de ingredientes como dendê, quiabo, inhame e pratos como acarajé, vatapá e feijoada</li>
+                <li><strong>Quilombos:</strong> comunidades de resistência como Palmares, liderado por Zumbi, que se tornou símbolo da luta pela liberdade</li>
+            </ul>
+
+            <h4>Eventos Marcantes</h4>
+            <div class="timeline-events">
+                <div class="event">
+                    <span class="year">1530-1888</span>
+                    <p><strong>Período Escravocrata:</strong> Chegada forçada de milhões de africanos e desenvolvimento de uma cultura de resistência</p>
+                </div>
+                
+                <div class="event">
+                    <span class="year">1600-1695</span>
+                    <p><strong>Quilombo dos Palmares:</strong> República quilombola que resistiu por quase 100 anos, liderada por Ganga Zumba e Zumbi</p>
+                </div>
+                
+                <div class="event">
+                    <span class="year">1835</span>
+                    <p><strong>Revolta dos Malês:</strong> Levante organizado por africanos muçulmanos em Salvador, marco da resistência intelectual negra</p>
+                </div>
+                
+                <div class="event">
+                    <span class="year">1888</span>
+                    <p><strong>Abolição da Escravatura:</strong> Lei Áurea oficializa o fim da escravidão, mas inicia período de marginalização social</p>
+                </div>
+                
+                <div class="event">
+                    <span class="year">1930-1940</span>
+                    <p><strong>Valorização Cultural:</strong> Samba torna-se símbolo nacional; capoeira deixa de ser criminalizada; surgem as primeiras escolas de samba</p>
+                </div>
+                
+                <div class="event">
+                    <span class="year">2003</span>
+                    <p><strong>Lei 10.639:</strong> Torna obrigatório o ensino de história e cultura afro-brasileira nas escolas</p>
+                </div>
+                
+                <div class="event">
+                    <span class="year">2023</span>
+                    <p><strong>Consciência Negra:</strong> 20 de novembro torna-se feriado nacional, honrando Zumbi dos Palmares</p>
+                </div>
+            </div>
+
+            <h4>Influências na Cultura Brasileira</h4>
+            <p>A cultura afro-brasileira moldou profundamente a identidade nacional brasileira:</p>
+            <ul>
+                <li><strong>Música:</strong> Do samba ao funk, do axé ao rap, influenciando todos os gêneros musicais brasileiros</li>
+                <li><strong>Religião:</strong> Sincretismo religioso presente em festivais como o de Iemanjá e na Festa do Senhor do Bonfim</li>
+                <li><strong>Esportes:</strong> Capoeira reconhecida como Patrimônio Imaterial da Humanidade pela UNESCO</li>
+                <li><strong>Literatura:</strong> Tradição oral que originou contos, lendas e a literatura de cordel</li>
+                <li><strong>Artes Visuais:</strong> Influência na arquitetura, escultura e artesanato brasileiro</li>
+            </ul>
+
+            <p class="conclusion">Hoje, a cultura afro-brasileira é reconhecida como elemento fundamental da identidade nacional, representando não apenas resistência histórica, mas também criatividade, espiritualidade e força que continuam a enriquecer o Brasil contemporâneo.</p>
+        </div>
     </section>
     
     <!--<section id="folklore">
@@ -240,51 +378,6 @@
         })();
     </script>
 
-    <!-- NOVO: Script para exibir imagem ao lado do texto -->
-    <script>
-        // Mapeamento: ano → {src, alt}
-        const IMAGES = {
-            '1500': { src: 'assets/images/1500.png', alt: 'Ilustração da chegada de Pedro Álvares Cabral em 1500, com portugueses e indígenas na praia.' },
-            '1530': { src: 'assets/images/1530.jpg', alt: 'Mercado de escravos no Recife, com africanos acorrentados sendo vendidos por portugueses.' },
-            '1808': { src: 'assets/images/1600.jpg', alt: 'Formação de terreiros de candomblé no Rio de Janeiro após a chegada da corte portuguesa.' },
-            '1888': { src: 'assets/images/1888-abolicao.jpg', alt: 'lei aurea' },
-            '1930': { src: 'assets/images/1930-samba.jpg', alt: 'Escolas de samba no Rio de Janeiro nos anos 1930, com desfile na Praça XI.' },
-            '1960': { src: 'assets/images/1960-capoeira.jpg', alt: 'Roda de capoeira em Salvador, reconhecida como esporte em 1960.' },
-            '1988': { src: 'assets/images/1988-constituicao.jpg', alt: 'Constituição de 1988 garantindo direitos culturais e territoriais quilombolas.' },
-            '2000': { src: 'assets/images/2000-patrimonio.jpg', alt: 'Registro do Samba de Roda do Recôncavo como patrimônio imaterial em 2005.' },
-            '2010': { src: 'assets/images/2010-consciencia-negra.jpg', alt: 'Manifestação no Dia da Consciência Negra, instituído nacionalmente em 2011.' },
-            '2020': { src: 'assets/images/2020-ativismo-digital.jpg', alt: 'Ativistas afro-brasileiros usando redes sociais para preservar cultura.' },
-            '2030': { src: 'assets/images/2030-futuro.jpg', alt: 'Projeção de políticas de reparação e preservação cultural afro-brasileira.' }
-        };
 
-        // Atualiza painel (chamado pelo main.js)
-        window.updateTimelinePanel = function(year, title, desc) {
-            const panelTitle = document.getElementById('timeline-title');
-            const panelDesc = document.getElementById('timeline-desc');
-            const imgEl = document.getElementById('timeline-image');
-
-            panelTitle.textContent = `${year} — ${title}`;
-            panelDesc.textContent = desc;
-
-            const imgData = IMAGES[year] || null;
-            if (imgData) {
-                imgEl.src = imgData.src;
-                imgEl.alt = imgData.alt;
-                imgEl.style.display = 'block';
-            } else {
-                imgEl.style.display = 'none';
-            }
-        };
-
-        // Fallback: se main.js não carregar, ainda funciona
-        document.querySelectorAll('.timeline-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const year = item.getAttribute('data-year');
-                const title = item.getAttribute('data-title') || year;
-                const desc = window.TIMELINE_DATA?.[year] || 'Descrição não disponível.';
-                window.updateTimelinePanel?.(year, title, desc);
-            });
-        });
-    </script>
 </body>
 </html>
