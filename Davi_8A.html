@@ -113,6 +113,29 @@
             display: none;
         }
         .next-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(242,179,61,0.5); }
+        
+        /* Botão Salvar Score */
+        .save-score-btn {
+            position: fixed;
+            top: 18px;
+            right: 140px;
+            z-index: 110;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .save-score-btn:hover {
+            background: var(--gold);
+            color: var(--deep);
+            transform: translateY(-2px);
+        }
         /* Boosts */
         .boosts {
             display: flex;
@@ -178,10 +201,10 @@
         }
         .keyboard {
             display: grid;
-            grid-template-columns: repeat(9, 1fr);
-            gap: 6px;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 5px;
             margin-top: 5px;
-            max-width: 520px;
+            max-width: 600px;
             width: 95%;
         }
         .key {
@@ -395,6 +418,7 @@
         </div>
 
         <button class="next-btn" id="next-btn">Próxima</button>
+        <button class="save-score-btn" id="save-score-game">💾 Salvar</button>
 
         <div class="hangman-container">
             <div class="hint" id="hint-text"></div>
@@ -438,39 +462,39 @@
             { word: "SACI", hint: "Menino de uma perna só" },
             { word: "IARA", hint: "Sereia brasileira" },
             { word: "CURUPIRA", hint: "Protetor da floresta" },
-            { word: "XANGO", hint: "Orixá do trovão" },
+            { word: "XANGÔ", hint: "Orixá do trovão" },
             { word: "OXUM", hint: "Rainha das águas doces" },
-            { word: "YEMANJA", hint: "Mãe do mar" },
+            { word: "IEMANJÁ", hint: "Mãe do mar" },
             { word: "OGUM", hint: "Orixá guerreiro" },
-            { word: "OXOSSI", hint: "Caçador sagrado" },
+            { word: "OXÓSSI", hint: "Caçador sagrado" },
             { word: "AQUALTUNE", hint: "Princesa que fundou Palmares" },
             { word: "PELÉ", hint: "Rei do futebol brasileiro" },
             { word: "CAROLINA", hint: "Autora de Quarto de Despejo" },
-            { word: "LELIA", hint: "Grande ativista negra" },
+            { word: "LÉLIA", hint: "Grande ativista negra" },
             { word: "CASTRO ALVES", hint: "Poeta do Navio Negreiro" },
             
             // Instrumentos Musicais
             { word: "BERIMBAU", hint: "Instrumento principal da capoeira" },
             { word: "ATABAQUE", hint: "Tambor usado no candomblé" },
             { word: "PANDEIRO", hint: "Instrumento de samba e choro" },
-            { word: "CUICA", hint: "Tambor que faz som agudo" },
+            { word: "CUÍCA", hint: "Tambor que faz som agudo" },
             { word: "RECO RECO", hint: "Instrumento raspado com vara" },
             { word: "SURDO", hint: "Tambor grande do samba" },
-            { word: "AGOGO", hint: "Duas campanas de metal" },
+            { word: "AGOGÔ", hint: "Duas campanas de metal" },
             { word: "TIMBAL", hint: "Tambor de metal afinado" },
-            { word: "AFOXE", hint: "Chocalho de contas" },
-            { word: "GANZA", hint: "Chocalho cilíndrico" },
+            { word: "AFOXÉ", hint: "Chocalho de contas" },
+            { word: "GANZÁ", hint: "Chocalho cilíndrico" },
             { word: "CAXIXI", hint: "Chocalho de palha" },
             { word: "TAMBOURIN", hint: "Pandeiro pequeno" },
             
             // Comidas Típicas
-            { word: "ACARAJE", hint: "Bolinho baiano frito no dendê" },
-            { word: "VATAPA", hint: "Prato cremoso com camarão" },
+            { word: "ACARAJÉ", hint: "Bolinho baiano frito no dendê" },
+            { word: "VATAPÁ", hint: "Prato cremoso com camarão" },
             { word: "CARURU", hint: "Prato de quiabo refogado" },
-            { word: "ABARA", hint: "Acarajé cozido na folha" },
+            { word: "ABARÁ", hint: "Acarajé cozido na folha" },
             { word: "COCADA", hint: "Doce de coco e açúcar" },
             { word: "PAMONHA", hint: "Doce de milho na palha" },
-            { word: "MUNGUNZA", hint: "Doce de milho com leite" },
+            { word: "MUNGUNZÁ", hint: "Doce de milho com leite" },
             { word: "QUINDIM", hint: "Doce amarelo de coco" },
             { word: "FAROFA", hint: "Farinha temperada" },
             { word: "FEIJOADA", hint: "Prato com feijão preto" },
@@ -525,6 +549,11 @@
 
         function play(s) { s.currentTime = 0; s.play().catch(()=>{}); }
 
+        // Função para normalizar texto (remover acentos)
+        function normalizeText(text) {
+            return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
+        }
+
         // Sistema de Ranking
         function saveScore(name, level, wordsCorrect) {
             const scores = getScores();
@@ -572,8 +601,20 @@
         }
 
         function gameOver() {
-            if (level > 1 || totalWordsCorrect > 2) { // Só mostra modal se teve progresso
+            if (level > 1 || totalWordsCorrect > 0) { // Mostra modal se passou do nível 1 OU acertou qualquer palavra
                 showNameModal();
+            } else {
+                // Se não teve progresso, volta ao menu
+                document.getElementById('menu').style.display = 'flex';
+                document.getElementById('game').style.display = 'none';
+                // Reset do jogo
+                level = 1;
+                xp = 0;
+                skips = 1;
+                reveals = 1;
+                currentIndex = 0;
+                words = shuffle([...allWords]);
+                updateUI();
             }
         }
 
@@ -609,6 +650,11 @@
         document.getElementById('ranking-btn').onclick = () => {
             play(clickSound);
             showRanking();
+        };
+        
+        document.getElementById('save-score-game').onclick = () => {
+            play(clickSound);
+            showNameModal();
         };
 
         document.getElementById('close-ranking').onclick = () => {
@@ -720,7 +766,9 @@
         function createKeyboard() {
             const kb = document.getElementById('keyboard');
             kb.innerHTML = '';
-            'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(l => {
+            // Teclado com caracteres especiais
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÃÇÉÊÍÓÔÕÚ';
+            letters.split('').forEach(l => {
                 const btn = document.createElement('button');
                 btn.className = 'key';
                 btn.textContent = l;
@@ -734,11 +782,24 @@
             if (btn.classList.contains('used')) return;
             btn.classList.add('used');
 
-            if (currentWord.word.includes(letter)) {
+            // Normalizar a letra clicada e a palavra para comparação
+            const normalizedLetter = normalizeText(letter);
+            const normalizedWord = normalizeText(currentWord.word);
+            
+            let found = false;
+            
+            // Verificar se a letra (normalizada) existe na palavra
+            if (normalizedWord.includes(normalizedLetter)) {
                 btn.classList.add('correct');
-                currentWord.word.split('').forEach((l,i) => {
-                    if (l===letter) displayedWord[i] = letter;
+                
+                // Revelar todas as ocorrências da letra (tanto normal quanto acentuada)
+                currentWord.word.split('').forEach((wordLetter, i) => {
+                    if (normalizeText(wordLetter) === normalizedLetter) {
+                        displayedWord[i] = wordLetter; // Mostra a letra original (com acento se houver)
+                        found = true;
+                    }
                 });
+                
                 document.getElementById('word-display').textContent = displayedWord.join(' ');
                 if (!displayedWord.includes('_')) win();
             } else {
@@ -768,7 +829,7 @@
             document.getElementById('message').style.color = 'var(--wrong)';
             nextBtn.style.display = 'block';
             disableKeyboard();
-            // Mostra modal de nome após 2 segundos
+            // Sempre mostra modal de nome após 2 segundos se o jogador teve algum progresso
             setTimeout(() => {
                 gameOver();
             }, 2000);
