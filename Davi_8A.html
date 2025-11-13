@@ -208,6 +208,140 @@
             font-weight: bold;
             min-height: 40px;
         }
+        
+        /* Modal para entrada de nome */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            border: 2px solid var(--gold);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        
+        .modal h2 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+        
+        .name-input {
+            width: 100%;
+            padding: 12px;
+            margin: 1rem 0;
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+        
+        .name-input::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .modal-btn {
+            background: linear-gradient(45deg, var(--gold), var(--sunset));
+            color: var(--deep);
+            border: none;
+            padding: 12px 30px;
+            margin: 0 10px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(242,179,61,0.4);
+        }
+        
+        /* Ranking */
+        .ranking {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border: 2px solid var(--gold);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .ranking h3 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .ranking-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            margin: 5px 0;
+            background: rgba(255,255,255,0.08);
+            border-radius: 8px;
+            border-left: 4px solid var(--gold);
+        }
+        
+        .ranking-item.top-3 {
+            background: rgba(242,179,61,0.15);
+            border-left-color: var(--sunset);
+        }
+        
+        .ranking-position {
+            font-weight: bold;
+            color: var(--gold);
+            min-width: 30px;
+        }
+        
+        .ranking-name {
+            flex: 1;
+            text-align: left;
+            margin-left: 10px;
+        }
+        
+        .ranking-score {
+            font-weight: bold;
+            color: var(--sunset);
+        }
+        
+        /* Botão ranking no menu */
+        .ranking-btn {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            padding: 15px 40px;
+            margin-top: 20px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .ranking-btn:hover {
+            background: var(--gold);
+            color: var(--deep);
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
@@ -222,6 +356,32 @@
         </h1>
         <p style="font-size:1.6rem;margin:30px 0;">Consciência Negra: História & Folclore</p>
         <button class="play" id="play-btn" style="padding:20px 60px;font-size:1.8rem;background:linear-gradient(45deg,var(--gold),var(--sunset));color:var(--deep);border:none;border-radius:999px;cursor:pointer;">PLAY</button>
+        <button class="ranking-btn" id="ranking-btn">🏆 RANKING</button>
+    </div>
+
+    <!-- MODAL DE ENTRADA DE NOME -->
+    <div id="name-modal" class="modal">
+        <div class="modal-content">
+            <h2>🎉 Parabéns!</h2>
+            <p>Você alcançou o nível <span id="final-level">1</span>!</p>
+            <p>Digite seu nome para salvar no ranking:</p>
+            <input type="text" id="player-name" class="name-input" placeholder="Seu nome aqui..." maxlength="15">
+            <div style="margin-top: 1.5rem;">
+                <button class="modal-btn" id="save-score">Salvar</button>
+                <button class="modal-btn" id="skip-save" style="background:rgba(255,255,255,0.2);">Pular</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE RANKING -->
+    <div id="ranking-modal" class="modal">
+        <div class="modal-content">
+            <h2>🏆 Ranking dos Mestres</h2>
+            <div id="ranking-list" class="ranking">
+                <!-- Rankings serão inseridos aqui -->
+            </div>
+            <button class="modal-btn" id="close-ranking">Fechar</button>
+        </div>
     </div>
 
     <!-- JOGO -->
@@ -334,6 +494,9 @@
         let xp = 0;
         let skips = 1;
         let reveals = 1;
+        let playerName = '';
+        let totalWordsCorrect = 0;
+        let gameStartTime = Date.now();
 
         let currentWord = {};
         let displayedWord = [];
@@ -362,6 +525,58 @@
 
         function play(s) { s.currentTime = 0; s.play().catch(()=>{}); }
 
+        // Sistema de Ranking
+        function saveScore(name, level, wordsCorrect) {
+            const scores = getScores();
+            const score = {
+                name: name,
+                level: level,
+                wordsCorrect: wordsCorrect,
+                date: new Date().toLocaleDateString('pt-BR'),
+                points: (level * 100) + (wordsCorrect * 10)
+            };
+            scores.push(score);
+            scores.sort((a, b) => b.points - a.points);
+            scores.splice(10); // Manter apenas top 10
+            localStorage.setItem('hangmanScores', JSON.stringify(scores));
+        }
+
+        function getScores() {
+            const scores = localStorage.getItem('hangmanScores');
+            return scores ? JSON.parse(scores) : [];
+        }
+
+        function showRanking() {
+            const scores = getScores();
+            const rankingList = document.getElementById('ranking-list');
+            
+            if (scores.length === 0) {
+                rankingList.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.6);padding:2rem;">Nenhum score registrado ainda!</p>';
+            } else {
+                rankingList.innerHTML = scores.map((score, index) => `
+                    <div class="ranking-item ${index < 3 ? 'top-3' : ''}">
+                        <span class="ranking-position">#${index + 1}</span>
+                        <span class="ranking-name">${score.name}</span>
+                        <span class="ranking-score">Nv.${score.level} (${score.points}pts)</span>
+                    </div>
+                `).join('');
+            }
+            
+            document.getElementById('ranking-modal').style.display = 'flex';
+        }
+
+        function showNameModal() {
+            document.getElementById('final-level').textContent = level;
+            document.getElementById('name-modal').style.display = 'flex';
+            document.getElementById('player-name').focus();
+        }
+
+        function gameOver() {
+            if (level > 1 || totalWordsCorrect > 2) { // Só mostra modal se teve progresso
+                showNameModal();
+            }
+        }
+
         function calculateXPGain() {
             return Math.max(10, 50 - (wrongGuesses * 8));
         }
@@ -383,10 +598,69 @@
 
         document.getElementById('play-btn').onclick = () => {
             play(clickSound);
+            gameStartTime = Date.now();
+            totalWordsCorrect = 0;
             document.getElementById('menu').style.display = 'none';
             document.getElementById('game').style.display = 'block';
             loadWord();
         };
+
+        // Event listeners para ranking
+        document.getElementById('ranking-btn').onclick = () => {
+            play(clickSound);
+            showRanking();
+        };
+
+        document.getElementById('close-ranking').onclick = () => {
+            play(clickSound);
+            document.getElementById('ranking-modal').style.display = 'none';
+        };
+
+        document.getElementById('save-score').onclick = () => {
+            const name = document.getElementById('player-name').value.trim();
+            if (name) {
+                saveScore(name, level, totalWordsCorrect);
+                play(clickSound);
+                document.getElementById('name-modal').style.display = 'none';
+                showRanking();
+            } else {
+                alert('Por favor, digite seu nome!');
+            }
+        };
+
+        document.getElementById('skip-save').onclick = () => {
+            play(clickSound);
+            document.getElementById('name-modal').style.display = 'none';
+            document.getElementById('menu').style.display = 'flex';
+            document.getElementById('game').style.display = 'none';
+            // Reset do jogo
+            level = 1;
+            xp = 0;
+            skips = 1;
+            reveals = 1;
+            currentIndex = 0;
+            words = shuffle([...allWords]);
+            updateUI();
+        };
+
+        // Enter para salvar nome
+        document.getElementById('player-name').onkeypress = (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('save-score').click();
+            }
+        };
+
+        // Fechar modals clicando fora
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.onclick = (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    if (modal.id === 'name-modal') {
+                        document.getElementById('skip-save').click();
+                    }
+                }
+            };
+        });
 
         nextBtn.onclick = () => { play(clickSound); nextWord(); };
         skipBtn.onclick = () => { 
@@ -478,6 +752,7 @@
 
         function win() {
             const xpGain = calculateXPGain();
+            totalWordsCorrect++;
             document.getElementById('message').innerHTML = `Parabéns! Acertou!<br>+${xpGain} XP (${wrongGuesses} erros)`;
             document.getElementById('message').style.color = 'var(--correct)';
             nextBtn.style.display = 'block';
@@ -493,6 +768,10 @@
             document.getElementById('message').style.color = 'var(--wrong)';
             nextBtn.style.display = 'block';
             disableKeyboard();
+            // Mostra modal de nome após 2 segundos
+            setTimeout(() => {
+                gameOver();
+            }, 2000);
         }
 
         function disableKeyboard() {
