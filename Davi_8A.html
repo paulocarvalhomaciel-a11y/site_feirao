@@ -659,14 +659,6 @@
                     rankingCache = globalScores;
                     lastRankingUpdate = now;
                     console.log('✅ Ranking global carregado:', globalScores.length, 'scores');
-                    
-                    // Se não há scores globais, retorna locais
-                    if (globalScores.length === 0) {
-                        const localScores = getScores();
-                        console.log('⚠️ Ranking global vazio, usando local:', localScores.length, 'scores');
-                        return localScores;
-                    }
-                    
                     return rankingCache;
                 } else {
                     console.log('Erro ao buscar ranking global, usando local');
@@ -714,24 +706,17 @@
             try {
                 // Força atualização do ranking ao abrir
                 rankingCache = null; // Limpa o cache para buscar dados frescos
-                let scores = await getGlobalRanking();
-                
-                // Se não há scores online, tenta buscar locais
-                if (scores.length === 0) {
-                    const localScores = getScores();
-                    if (localScores.length > 0) {
-                        scores = localScores;
-                        console.log('Usando scores locais, pois ranking global está vazio');
-                    }
-                }
+                const scores = await getGlobalRanking();
                 
                 console.log('📊 Exibindo ranking com', scores.length, 'scores');
                 
                 if (scores.length === 0) {
                     rankingList.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.6);padding:2rem;">Nenhum score registrado ainda!<br>Seja o primeiro! 🏆</p>';
                 } else {
-                    const statusIcon = isOnline ? '🌐' : '📱';
-                    const statusText = isOnline ? 'Ranking Global' : 'Ranking Local';
+                    // Verifica se é realmente global (tem cache válido e online) ou local (fallback por erro)
+                    const isGlobal = isOnline && rankingCache !== null;
+                    const statusIcon = isGlobal ? '🌐' : '📱';
+                    const statusText = isGlobal ? 'Ranking Global' : 'Ranking Local (Backup)';
                     const lastUpdate = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
                     
                     rankingList.innerHTML = `
