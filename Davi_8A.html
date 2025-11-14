@@ -766,12 +766,12 @@
         function createKeyboard() {
             const kb = document.getElementById('keyboard');
             kb.innerHTML = '';
-            // Teclado com caracteres especiais
-            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÃÇÉÊÍÓÔÕÚ';
+            // Teclado com caracteres especiais + espaço
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÃÇÉÊÍÓÔÕÚ ';
             letters.split('').forEach(l => {
                 const btn = document.createElement('button');
                 btn.className = 'key';
-                btn.textContent = l;
+                btn.textContent = l === ' ' ? '␣' : l; // Mostra símbolo visual para espaço
                 btn.onclick = () => guessLetter(l, btn);
                 kb.appendChild(btn);
             });
