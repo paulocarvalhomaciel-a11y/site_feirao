@@ -615,11 +615,12 @@
                 });
 
                 if (response.ok) {
-                    console.log('✅ Score salvo globalmente!');
+                    const result = await response.json();
+                    console.log('✅ Score salvo globalmente!', result);
                     rankingCache = currentRanking; // Atualiza o cache
                     lastRankingUpdate = Date.now();
                 } else {
-                    console.log('⚠️ Erro ao salvar no servidor, mantendo local');
+                    console.log('⚠️ Erro ao salvar no servidor (status ' + response.status + '), mantendo local');
                 }
             } catch (error) {
                 console.log('⚠️ Erro de conexão, mantendo score local:', error);
@@ -654,9 +655,18 @@
 
                 if (response.ok) {
                     const data = await response.json();
-                    rankingCache = data.record.scores || [];
+                    const globalScores = data.record.scores || [];
+                    rankingCache = globalScores;
                     lastRankingUpdate = now;
-                    console.log('Ranking global carregado com sucesso!');
+                    console.log('✅ Ranking global carregado:', globalScores.length, 'scores');
+                    
+                    // Se não há scores globais, retorna locais
+                    if (globalScores.length === 0) {
+                        const localScores = getScores();
+                        console.log('⚠️ Ranking global vazio, usando local:', localScores.length, 'scores');
+                        return localScores;
+                    }
+                    
                     return rankingCache;
                 } else {
                     console.log('Erro ao buscar ranking global, usando local');
@@ -678,17 +688,21 @@
                 level: level,
                 wordsCorrect: wordsCorrect,
                 date: new Date().toLocaleDateString('pt-BR'),
+                timestamp: Date.now(),
                 points: (level * 100) + (wordsCorrect * 10)
             };
             scores.push(score);
             scores.sort((a, b) => b.points - a.points);
-            scores.splice(10); // Manter apenas top 10 local
+            scores.splice(50); // Manter top 50 local também
             localStorage.setItem('hangmanScores', JSON.stringify(scores));
+            console.log('✅ Score salvo localmente:', score);
         }
 
         function getScores() {
             const scores = localStorage.getItem('hangmanScores');
-            return scores ? JSON.parse(scores) : [];
+            const parsed = scores ? JSON.parse(scores) : [];
+            console.log('📦 Scores locais encontrados:', parsed.length);
+            return parsed;
         }
 
         async function showRanking() {
@@ -700,7 +714,18 @@
             try {
                 // Força atualização do ranking ao abrir
                 rankingCache = null; // Limpa o cache para buscar dados frescos
-                const scores = await getGlobalRanking();
+                let scores = await getGlobalRanking();
+                
+                // Se não há scores online, tenta buscar locais
+                if (scores.length === 0) {
+                    const localScores = getScores();
+                    if (localScores.length > 0) {
+                        scores = localScores;
+                        console.log('Usando scores locais, pois ranking global está vazio');
+                    }
+                }
+                
+                console.log('📊 Exibindo ranking com', scores.length, 'scores');
                 
                 if (scores.length === 0) {
                     rankingList.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.6);padding:2rem;">Nenhum score registrado ainda!<br>Seja o primeiro! 🏆</p>';
