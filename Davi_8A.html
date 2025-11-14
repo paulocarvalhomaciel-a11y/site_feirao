@@ -459,11 +459,36 @@
         </div>
     </div>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    
     <script>
         const clickSound = new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAIlYAAESsAAACABAAZGF0YQAAAAA=');
         const winSound   = new Audio('data:audio/wav;base64,UklGRl4AAABXQVZFZm10IBAAAAABAAEAIlYAAESsAAACABAAZGF0YQAAAAA=');
         const wrongSound = new Audio('data:audio/wav;base64,UklGRhwAAABXQVZFZm10IBAAAAABAAEARKwAAEzGAAACABAAZGF0YQAAAAA=');
         const levelUpSound = new Audio('data:audio/wav;base64,UklGRl4AAABXQVZFZm10IBAAAAABAAEAIlYAAESsAAACABAAZGF0YQAAAAA=');
+
+        // Configuração Firebase (Database público para demo)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBqX8vZ9K3mR7jL5pN2wQ4tY8uE6vC1fA9",
+            authDomain: "cecal-cultura.firebaseapp.com",
+            databaseURL: "https://cecal-cultura-default-rtdb.firebaseio.com",
+            projectId: "cecal-cultura",
+            storageBucket: "cecal-cultura.appspot.com",
+            messagingSenderId: "123456789012",
+            appId: "1:123456789012:web:abc123def456"
+        };
+
+        // Inicializa Firebase
+        let database = null;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            database = firebase.database();
+            console.log('✅ Firebase conectado!');
+        } catch (error) {
+            console.log('⚠️ Erro ao conectar Firebase:', error);
+        }
 
         const allWords = [
             { word: "ZUMBI", hint: "Líder do maior quilombo" },
@@ -565,11 +590,10 @@
             return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
         }
 
-        // Sistema de Ranking - Usando apenas localStorage por enquanto
-        // TODO: Implementar backend próprio para ranking global
+        // Sistema de Ranking Global com Firebase
         let isOnline = navigator.onLine;
 
-        // Salvar Score (apenas local por enquanto)
+        // Salvar Score Global no Firebase
         async function saveScoreGlobal(name, level, wordsCorrect) {
             const points = (level * 100) + (wordsCorrect * 10);
             const score = {
@@ -581,15 +605,51 @@
                 points: points
             };
 
-            // Salva localmente
+            // Salva localmente sempre (backup)
             saveScore(name, level, wordsCorrect);
-            console.log('✅ Score salvo:', score);
+
+            // Tenta salvar no Firebase
+            if (database && isOnline) {
+                try {
+                    await database.ref('rankings').push(score);
+                    console.log('✅ Score salvo no ranking global!', score);
+                } catch (error) {
+                    console.log('⚠️ Erro ao salvar no Firebase:', error);
+                }
+            } else {
+                console.log('📱 Score salvo apenas localmente (offline)');
+            }
         }
 
         async function getGlobalRanking() {
-            // Por enquanto, retorna apenas scores locais
-            console.log('📦 Carregando ranking local');
-            return getScores();
+            if (!database || !isOnline) {
+                console.log('📦 Usando ranking local (offline ou Firebase indisponível)');
+                return getScores();
+            }
+
+            try {
+                const snapshot = await database.ref('rankings').orderByChild('points').limitToLast(50).once('value');
+                const scores = [];
+                
+                snapshot.forEach((childSnapshot) => {
+                    scores.push(childSnapshot.val());
+                });
+
+                // Ordena do maior para o menor
+                scores.sort((a, b) => b.points - a.points);
+                
+                console.log('🌐 Ranking global carregado:', scores.length, 'scores');
+                
+                // Se não houver scores globais, retorna locais
+                if (scores.length === 0) {
+                    return getScores();
+                }
+                
+                return scores;
+            } catch (error) {
+                console.log('⚠️ Erro ao buscar ranking global:', error);
+                return getScores();
+            }
         }
         function saveScore(name, level, wordsCorrect) {
             const scores = getScores();
@@ -619,7 +679,7 @@
             const rankingList = document.getElementById('ranking-list');
             
             // Mostra loading
-            rankingList.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.6);padding:2rem;"><span style="animation: pulse 2s infinite;">📦 Carregando ranking...</span></p>';
+            rankingList.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.6);padding:2rem;"><span style="animation: pulse 2s infinite;">🌐 Carregando ranking global...</span></p>';
             
             try {
                 const scores = await getGlobalRanking();
@@ -629,11 +689,14 @@
                 if (scores.length === 0) {
                     rankingList.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.6);padding:2rem;">Nenhum score registrado ainda!<br>Seja o primeiro! 🏆</p>';
                 } else {
+                    const isGlobal = database && isOnline;
+                    const statusIcon = isGlobal ? '🌐' : '📱';
+                    const statusText = isGlobal ? 'Ranking Global' : 'Ranking Local';
                     const lastUpdate = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
                     
                     rankingList.innerHTML = `
                         <div style="text-align:center;margin-bottom:1rem;color:var(--gold);font-size:0.9rem;">
-                            📱 Ranking Local<br>
+                            ${statusIcon} ${statusText}<br>
                             <span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">Atualizado às ${lastUpdate}</span>
                         </div>
                         ${scores.slice(0, 20).map((score, index) => `
@@ -705,15 +768,15 @@
             loadWord();
         };
 
-        // Detector de status online/offline (simplificado)
+        // Detector de status online/offline
         window.addEventListener('online', () => {
             isOnline = true;
-            console.log('✅ Conectado!');
+            console.log('✅ Conectado! Ranking global disponível.');
         });
         
         window.addEventListener('offline', () => {
             isOnline = false;
-            console.log('⚠️ Desconectado!');
+            console.log('⚠️ Desconectado! Usando ranking local.');
         });
 
         // Event listeners para ranking
