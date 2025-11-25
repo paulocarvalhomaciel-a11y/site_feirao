@@ -9,19 +9,22 @@
     <!-- ADDED: estilos rápidos para o menu Games -->
     <style>
         /* dropdown games */
+        .game-name {
+            color: #d90429 !important;
+        }
         .nav-games { position: relative; }
         
         /* Estilo para o nome da escola no canto direito */
         nav ul {
             display: flex;
+            align-items: center;
             justify-content: flex-start;
-            align-items: flex-start;
         }
         .school-name {
             margin-left: auto;
             font-weight: 700;
             color: #fff;
-            padding: 8px 12px;
+            padding: 1px 12px;
             white-space: nowrap;
         }
         
@@ -39,24 +42,32 @@
             position: absolute;
             top: calc(100% + 8px);
             left: 0;
-            background: rgba(10,5,2,0.98);
+            background: rgba(255, 116, 29, 0.98);
             border: 1px solid rgba(242,179,61,0.12);
             border-radius: 29px;
-            padding: 8px;
-            min-width: 280px;
-            display: none;
-            flex-direction: column;
-            gap: 6px;
+            padding: 12px 16px;        /* ← mudei de 130px para 20px (ou o valor que preferir) */
+            min-width: 320px;
+            display: none;             /* mantém escondido quando fechado */
             box-shadow: 0 12px 32px rgba(0,0,0,0.6);
-            z-index: 200;
+            z-index: 9999;             /* ← z-index bem alto garante que fique por cima de tudo */
+        }
+        #games-menu[aria-hidden="false"] {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 24px;
+            justify-items: start;
         }
         #games-menu a {
-            display: block;
-            padding: 8px 10px;
+            display: inline-block;
+            padding: 10px 18px;
             color: var(--light);
             text-decoration: none;
             border-radius: 8px;
             font-weight: 700;
+            text-align: left;
+            min-width: max-content;
+            position: relative;
+            z-index: 600;
         }
         #games-menu a:hover, #games-menu a:focus {
             background: rgba(242,179,61,0.08);
@@ -84,7 +95,7 @@
         }
 
         #history h2 {
-            color: #733009;
+            color: #1473e6;
             text-align: center;
             font-size: 2.5rem;
             margin-bottom: 2rem;
@@ -92,7 +103,7 @@
         }
 
         .history-content h3 {
-            color: #733009;
+            color: #1473e6;
             font-size: 1.8rem;
             margin: 2rem 0 1rem;
             border-bottom: 3px solid rgba(242, 179, 61, 0.3);
@@ -100,7 +111,7 @@
         }
 
         .history-content h4 {
-            color: #733009;
+            color: #1473e6;
             font-size: 1.4rem;
             margin: 1.5rem 0 0.8rem;
         }
@@ -124,7 +135,7 @@
         }
 
         .history-content strong {
-            color: #733009;
+            color: #1473e6;;
             font-weight: 700;
         }
 
@@ -217,20 +228,20 @@
         <ul>
         <link rel="stylesheet" href="assets/style.css">
             <li><a href="index.html">Home</a></li>
-            <li><a href="#history">História</a></li>
-            <li><a href="folclore-afro.html">Folclore</a></li>
-            <li><a href="equipes.html">Equipes</a></li>
-            <li><a href="mapa.html">Mapa</a></li>
-            <li><a href="campina_historia.html">História do Colégio</a></li>
+            <li><a href="campina_historia.html">Nossa história</a></li>
+            <li><a href="grade.html">Nossa Grade</a></li>
+            <li><a href="feirao.html">Eventos</a></li>
+            
 
             <!-- CHANGED: Games dropdown -->
             <li class="nav-games">
                 <button id="games-button" aria-haspopup="true" aria-expanded="false">Games!</button>
                 <ul id="games-menu" role="menu" aria-hidden="true">
-                    <li role="none"><a role="menuitem" href="Davi_8A.html">8°A FORCA</a></li>
-                    <li role="none"><a role="menuitem" href="GAMES/culinaria.html">8°B QUIZ CULINÁRIO</a></li>
-                    <li role="none"><a role="menuitem" href="GAMES/vitoria_8c.html">8°C RITMOS ANCESTRAIS</a></li>
-                    <li role="none"><a role="menuitem" href="GAMES/almir_flap.html">7°B FLAP BIRD</a></li>
+                    <li role="none"><a role="menuitem" class="game-name" href="Davi_8A.html">8°A FORCA</a></li>
+                    <li role="none"><a role="menuitem" class="game-name" href="GAMES/culinaria.html">8°B QUIZ CULINÁRIO</a></li>
+                    <li role="none"><a role="menuitem" class="game-name" href="GAMES/vitoria_8c.html">8°C RITMOS ANCESTRAIS</a></li>
+                    <li role="none"><a role="menuitem" class="game-name" href="GAMES/almir_flap.html">7°B FLAP BIRD</a></li>
+                            
                     
                 </ul>
             </li>

@@ -5,7 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>História do Colégio Campina da Lagoa</title>
     <style>
-        /* dropdown games */
+        :root {
+    --p-1: #03178C;
+    --p-2: #1473e6;
+    --p-3: #0D8C39;
+    --p-5: #F2DCC2;
+    --p-4: #0D0D0D;
+    --bg-soft: #000000;
+    --text: var();
+    --muted: rgba(20,115,230,0.72);
+    --radius: 10px;
+    --gap: 1rem;
+}
+            p {
+                color: #0D0D0D !important;
+            }
+            b {
+                color: #0D0D0D !important;
+            }
+            .contact br {
+                color: #0D0D0D !important;
+            }
+            li {
+                color: #0D0D0D !important;
+            }
+            body {
+                background-color: var(--bg-soft);
+                background-image:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'><rect width='800' height='600' fill='%2303178C'/><rect x='0' y='0' width='120' height='120' fill='%231473e6'/><rect x='120' y='0' width='120' height='120' fill='%230D8C39'/><rect x='240' y='0' width='120' height='120' fill='%23F2DCC2'/><rect x='360' y='0' width='120' height='120' fill='%2303178C'/><rect x='0' y='120' width='120' height='120' fill='%230D8C39'/><rect x='120' y='120' width='120' height='120' fill='%23F2DCC2'/><circle cx='620' cy='420' r='140' fill='%231473e6' opacity='0.14'/></svg>"),
+        linear-gradient(180deg, rgba(3,23,140,0.06), rgba(20,115,230,0.04));
+    background-repeat: repeat, no-repeat;
+    background-size: 900px 675px, cover;
+    background-position: 0 0, center;
+    color: #0D0D0D;
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.7;
+    padding: 1.25rem;
+    animation: mosaicMove 60s linear infinite;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* dropdown games */
         .nav-games { position: relative; }
         
         /* Estilo para o nome da escola no canto direito */
@@ -74,13 +115,15 @@
             padding: 0;
         }
         .container {
+            /* === Transparência aplicada ao container - GitHub Copilot === */
             max-width: 1000px; margin: 2rem auto; padding: 2rem;
-            background: rgba(255,255,255,0.96); border-radius: 12px;
+            background: rgba(255,255,255,0.92); /* Transparente */
+            border-radius: 12px;
             border: 1px solid rgba(115,48,9,0.06); box-shadow: 0 8px 32px rgba(115,48,9,0.08);
             position: relative; z-index: 10;
         }
         h1, h2, h3 {
-            color: #733009;
+            color: #0D0D0D;;
             margin-top: 0;
         }
         h1 {
@@ -145,11 +188,10 @@
         <ul>
         <link rel="stylesheet" href="assets/style.css">
             <li><a href="index.html">Home</a></li>
-            <li><a href="#history">História</a></li>
-            <li><a href="folclore-afro.html">Folclore</a></li>
-            <li><a href="equipes.html">Equipes</a></li>
-            <li><a href="mapa.html">Mapa</a></li>
-            <li><a href="campina_historia.html">História do Colégio</a></li>
+            <li><a href="campina_historia.html">Nossa história</a></li>
+            <li><a href="grade.html">Nossa Grade</a></li>
+            <li><a href="eventos.html">Eventos</a></li>
+            
 
             <!-- CHANGED: Games dropdown -->
             <li class="nav-games">
@@ -203,13 +245,15 @@
         <h3>Faça parte do Paraná Integral!</h3>
         <p>Venha conhecer a escola que transforma vidas todos os dias.</p>
         <div class="contact">
-            <b>Colégio Estadual Campina da Lagoa – EFM</b><br>
-            Rua Duque de Caxias, 296 – Centro<br>
-            CEP: 87345-000 – Campina da Lagoa – PR<br>
-            Telefone/WhatsApp: (44) 3542-1270<br>
-            E-mail: campinadalagoa@escola.pr.gov.br<br>
-            <br>
-            <b>Educação em tempo integral. Futuro em tempo real.</b>
+            <div style="color:#0D0D0D;">
+                <b>Colégio Estadual Campina da Lagoa – EFM</b><br>
+                Rua Duque de Caxias, 296 – Centro<br>
+                CEP: 87345-000 – Campina da Lagoa – PR<br>
+                Telefone/WhatsApp: (44) 3542-1270<br>
+                E-mail: campinadalagoa@escola.pr.gov.br<br>
+                <br>
+                <b>Educação em tempo integral. Futuro em tempo real.</b>
+            </div>
         </div>
     </div>
 </body>

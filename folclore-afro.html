@@ -10,20 +10,21 @@
         @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap');
 
         :root {
-            --p-1: #f2b544; --p-2: #f29b30; --p-3: #d9560b; --p-4: #733009; --p-5: #bf3706;
-            --bg-soft: #fffaf0; --text: var(--p-4); --muted: rgba(115,48,9,0.72);
-            --radius: 10px; --gap: 1rem;
+            --p-1: #03178C;
+            --p-2: #1473e6;
+            --p-3: #0D8C39;
+            --p-4: #F2DCC2;
+            --p-5: #0D0D0D;
+            --bg-soft: #fffaf0;
+            --text: var(--p-1);
+            --muted: rgba(20,115,230,0.72);
+            --radius: 10px;
+            --gap: 1rem;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            background-color: var(--bg-soft);
-            background-image:
-                url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'><rect width='800' height='600' fill='%23f2b544'/><rect x='0' y='0' width='120' height='120' fill='%23f29b30'/><rect x='120' y='0' width='120' height='120' fill='%23d9560b'/><rect x='240' y='0' width='120' height='120' fill='%23733009'/><rect x='360' y='0' width='120' height='120' fill='%23bf3706'/><rect x='0' y='120' width='120' height='120' fill='%23733009'/><rect x='120' y='120' width='120' height='120' fill='%23bf3706'/><circle cx=\"620\" cy=\"420\" r=\"140\" fill=\"%23f29b30\" opacity=\"0.14\"/></svg>"),
-                linear-gradient(180deg, rgba(243,186,68,0.06), rgba(255,250,240,0.04));
-            background-repeat: repeat, no-repeat;
-            background-size: 900px 675px, cover;
-            background-position: 0 0, center;
+            background: linear-gradient(180deg, var(--p-2) 0%, var(--bg-soft) 100%);
             color: var(--text);
             font-family: 'Roboto', sans-serif;
             line-height: 1.7;
@@ -50,7 +51,8 @@
 
         /* NAVEGAÇÃO FIXA E IGUAL À INDEX */
         nav {
-            background: linear-gradient(90deg, rgba(115,48,9,0.94), rgba(217,86,11,0.9));
+            background: var(--p-2);
+            color: var(--p-5);
             backdrop-filter: blur(4px) saturate(1.05);
             color: #fff; padding: 0.5rem; border-radius: 10px; margin-bottom: var(--gap);
             position: sticky; top: 0; z-index: 60;
@@ -114,8 +116,8 @@
 
         .container {
             max-width: 900px; margin: 2rem auto; padding: 1.5rem;
-            background: rgba(255,255,255,0.96); border-radius: 12px;
-            border: 1px solid rgba(115,48,9,0.06); box-shadow: 0 8px 32px rgba(115,48,9,0.08);
+            background: var(--bg-soft); border-radius: 12px;
+            border: 1px solid rgba(20,115,230,0.08); box-shadow: 0 8px 32px rgba(20,115,230,0.08);
             position: relative; z-index: 10;
         }
 
@@ -138,8 +140,8 @@
 
         .folclore-card {
             background: #fff; border-radius: var(--radius); overflow: hidden;
-            box-shadow: 0 6px 20px rgba(115,48,9,0.08); transition: all .2s ease;
-            display: flex; flex-direction: column; border: 1px solid rgba(115,48,9,0.06);
+            box-shadow: 0 6px 20px rgba(20,115,230,0.08); transition: all .2s ease;
+            display: flex; flex-direction: column; border: 1px solid rgba(20,115,230,0.06);
         }
         .folclore-card:hover { transform: translateY(-6px); box-shadow: 0 16px 32px rgba(115,48,9,0.14); }
 
@@ -151,9 +153,9 @@
         .folclore-card .origem { font-size: 0.8rem; color: var(--p-3); font-style: italic; margin-top: auto; font-weight: 600; }
 
         footer {
-            text-align: center; padding: 1.5rem; background: linear-gradient(90deg, var(--p-4), var(--p-5));
+            text-align: center; padding: 1.5rem; background: linear-gradient(90deg, var(--p-2), var(--p-1));
             color: #fff; border-radius: 10px; margin: 2rem auto 0; max-width: 900px;
-            font-size: 0.9rem; box-shadow: 0 8px 30px rgba(115,48,9,0.14);
+            font-size: 0.9rem; box-shadow: 0 8px 30px rgba(20,115,230,0.14);
         }
 
         @media (max-width: 640px) {
@@ -169,11 +171,10 @@
         <ul>
         <link rel="stylesheet" href="assets/style.css">
             <li><a href="index.html">Home</a></li>
-            <li><a href="#history">História</a></li>
-            <li><a href="folclore-afro.html">Folclore</a></li>
-            <li><a href="equipes.html">Equipes</a></li>
-            <li><a href="mapa.html">Mapa</a></li>
-            <li><a href="campina_historia.html">História do Colégio</a></li>
+            <li><a href="campina_historia.html">Nossa história</a></li>
+            <li><a href="grade.html">Nossa Grade</a></li>
+            <li><a href="feirao.html">Eventos</a></li>
+            
 
             <!-- CHANGED: Games dropdown -->
             <li class="nav-games">

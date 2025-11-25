@@ -84,7 +84,7 @@
         }
 
         #history h2 {
-            color: #733009;
+            color: #1473e6;
             text-align: center;
             font-size: 2.5rem;
             margin-bottom: 2rem;
@@ -92,7 +92,7 @@
         }
 
         .history-content h3 {
-            color: #733009;
+            color: #1473e6;
             font-size: 1.8rem;
             margin: 2rem 0 1rem;
             border-bottom: 3px solid rgba(242, 179, 61, 0.3);
@@ -100,7 +100,7 @@
         }
 
         .history-content h4 {
-            color: #733009;
+            color: #1473e6;
             font-size: 1.4rem;
             margin: 1.5rem 0 0.8rem;
         }
@@ -124,7 +124,7 @@
         }
 
         .history-content strong {
-            color: #733009;
+            color: #1473e6;
             font-weight: 700;
         }
 
@@ -209,6 +209,35 @@
                 padding: 1rem;
             }
         }
+
+        :root {
+    --p-1: #03178C;
+    --p-2: #1473e6;
+    --p-3: #0D8C39;
+    --p-4: #F2DCC2;
+    --p-5: #0D0D0D;
+    --bg-soft: #fffaf0;
+    --text: var(--p-1);
+    --muted: rgba(20,115,230,0.72);
+    --radius: 10px;
+    --gap: 1rem;
+}
+body {
+    background-color: var(--bg-soft);
+    background-image:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'><rect width='800' height='600' fill='%2303178C'/><rect x='0' y='0' width='120' height='120' fill='%231473e6'/><rect x='120' y='0' width='120' height='120' fill='%230D8C39'/><rect x='240' y='0' width='120' height='120' fill='%23F2DCC2'/><rect x='360' y='0' width='120' height='120' fill='%2303178C'/><rect x='0' y='120' width='120' height='120' fill='%230D8C39'/><rect x='120' y='120' width='120' height='120' fill='%23F2DCC2'/><circle cx='620' cy='420' r='140' fill='%231473e6' opacity='0.14'/></svg>"),
+        linear-gradient(180deg, rgba(3,23,140,0.06), rgba(20,115,230,0.04));
+    background-repeat: repeat, no-repeat;
+    background-size: 900px 675px, cover;
+    background-position: 0 0, center;
+    color: var(--text);
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.7;
+    padding: 1.25rem;
+    animation: mosaicMove 60s linear infinite;
+    min-height: 100vh;
+    position: relative;
+}
     </style>
 </head>
 <body>
@@ -217,11 +246,10 @@
         <ul>
         <link rel="stylesheet" href="assets/style.css">
             <li><a href="index.html">Home</a></li>
-            <li><a href="#history">História</a></li>
-            <li><a href="folclore-afro.html">Folclore</a></li>
-            <li><a href="equipes.html">Equipes</a></li>
-            <li><a href="mapa.html">Mapa</a></li>
-            <li><a href="campina_historia.html">História do Colégio</a></li>
+            <li><a href="campina_historia.html">Nossa história</a></li>
+            <li><a href="grade.html">Nossa Grade</a></li>
+            <li><a href="feirao.html">Eventos</a></li>
+            
 
             <!-- CHANGED: Games dropdown -->
             <li class="nav-games">
@@ -247,26 +275,15 @@
                             <ul class="carousel-indicators-header">
                                 <li class="carousel-indicator-header active" data-target="0"></li>
                                 <li class="carousel-indicator-header" data-target="1"></li>
-                                <li class="carousel-indicator-header" data-target="2"></li>
-                                <li class="carousel-indicator-header" data-target="3"></li>
                             </ul>
                         </div>
                         <div class="carousel-item-header active">
-                            <img class="header-image" src="assets/images/header.png" alt="Imagem 1 do carrossel" loading="lazy">
-                            <div class="header-overlay" role="region" aria-label="Cultura Afro / Aṣà Áfríkà" tabindex="0">
-                                <span class="overlay-text lang-pt">Cultura Afro</span>
-                                <span class="overlay-text lang-yo" aria-hidden="true">Aṣà Áfríkà</span>
-                            </div>
+                            <img class="header-image" src="assets/images/banners/banner_1.png" alt="Imagem 1 do carrossel" loading="lazy">
                         </div>
-                        <div class="carousel-item-header">
-                            <img class="header-image" src="assets/images/header2.png" alt="Imagem 2 do carrossel" loading="lazy">
-                        </div>
-                        <div class="carousel-item-header">
-                            <img class="header-image" src="assets/images/header3.png" alt="Imagem 3 do carrossel" loading="lazy">
-                        </div>
-                        <div class="carousel-item-header">
-                            <img class="header-image" src="assets/images/header4.png" alt="Imagem 4 do carrossel" loading="lazy">
-                        </div>
+                    </div>
+                    <div class="carousel-item-header">
+                        <img class="header-image" src="assets/images/banners/banner_1.png" alt="Imagem 1 do carrossel" loading="lazy">
+                    </div>
                     </div>
                 </div>
              </div>

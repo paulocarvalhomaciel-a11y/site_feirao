@@ -9,13 +9,12 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap');
 
-    /* Paleta fornecida */
     :root {
-        --p-1: #f2b544;
-        --p-2: #f29b30;
-        --p-3: #d9560b;
-        --p-4: #733009;
-        --p-5: #bf3706;
+        --p-1: #03178C;
+        --p-2: #1473e6;
+        --p-3: #0D8C39;
+        --p-4: #F2DCC2;
+        --p-5: #0D0D0D;
         --bg-soft: #fffaf0;
         --text: var(--p-4);
         --muted: rgba(115,48,9,0.72);
@@ -28,8 +27,8 @@
     body {
         background-color: var(--bg-soft);
         background-image:
-            url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'><rect width='800' height='600' fill='%23f2b544'/><rect x='0' y='0' width='120' height='120' fill='%23f29b30'/><rect x='120' y='0' width='120' height='120' fill='%23d9560b'/><rect x='240' y='0' width='120' height='120' fill='%23733009'/><rect x='360' y='0' width='120' height='120' fill='%23bf3706'/><rect x='0' y='120' width='120' height='120' fill='%23733009'/><rect x='120' y='120' width='120' height='120' fill='%23bf3706'/><circle cx=\"620\" cy=\"420\" r=\"140\" fill=\"%23f29b30\" opacity=\"0.14\"/></svg>"),
-            linear-gradient(180deg, rgba(243,186,68,0.06), rgba(255,250,240,0.04));
+            url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'><rect width='800' height='600' fill='%2303178C'/><rect x='0' y='0' width='120' height='120' fill='%231473e6'/><rect x='120' y='0' width='120' height='120' fill='%230D8C39'/><rect x='240' y='0' width='120' height='120' fill='%23F2DCC2'/><rect x='360' y='0' width='120' height='120' fill='%2303178C'/><rect x='0' y='120' width='120' height='120' fill='%230D8C39'/><rect x='120' y='120' width='120' height='120' fill='%23F2DCC2'/><circle cx='620' cy='420' r='140' fill='%231473e6' opacity='0.14'/></svg>"),
+            linear-gradient(180deg, rgba(3,23,140,0.06), rgba(20,115,230,0.04));
         background-repeat: repeat, no-repeat;
         background-size: 900px 675px, cover;
         background-position: 0 0, center;
@@ -206,32 +205,31 @@
 </head>
 <body>
     <!-- Navegação principal -->
-<nav aria-label="Navegação principal - Colégio Campina da Lagoa">
-    <ul>
-    <link rel="stylesheet" href="assets/style.css">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="#history">História</a></li>
-        <li><a href="folclore-afro.html">Folclore</a></li>
-        <li><a href="equipes.html">Equipes</a></li>
-        <li><a href="mapa.html">Mapa</a></li>
-        <li><a href="campina_historia.html">História do Colégio</a></li>
+    <nav aria-label="Navegação principal - Colégio Campina da Lagoa">
+        <ul>
+        <link rel="stylesheet" href="assets/style.css">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="campina_historia.html">Nossa história</a></li>
+            <li><a href="grade.html">Nossa Grade</a></li>
+            <li><a href="eventos.html">Eventos</a></li>
+            
 
-        <!-- CHANGED: Games dropdown -->
-        <li class="nav-games">
-            <button id="games-button" aria-haspopup="true" aria-expanded="false">Games!</button>
-            <ul id="games-menu" role="menu" aria-hidden="true">
-                <li role="none"><a role="menuitem" href="Davi_8A.html">8°A FORCA</a></li>
-                <li role="none"><a role="menuitem" href="GAMES/culinaria.html">8°B QUIZ CULINÁRIO</a></li>
-                <li role="none"><a role="menuitem" href="GAMES/vitoria_8c.html">8°C RITMOS ANCESTRAIS</a></li>
-                <li role="none"><a role="menuitem" href="GAMES/almir_flap.html">7°B FLAP BIRD</a></li>
-                
-            </ul>
-        </li>
-        
-        <!-- Nome da escola no canto direito -->
-        <li class="school-name">Colégio Campina da Lagoa</li>
-    </ul>
-</nav>
+            <!-- CHANGED: Games dropdown -->
+            <li class="nav-games">
+                <button id="games-button" aria-haspopup="true" aria-expanded="false">Games!</button>
+                <ul id="games-menu" role="menu" aria-hidden="true">
+                    <li role="none"><a role="menuitem" href="Davi_8A.html">8°A FORCA</a></li>
+                    <li role="none"><a role="menuitem" href="GAMES/culinaria.html">8°B QUIZ CULINÁRIO</a></li>
+                    <li role="none"><a role="menuitem" href="GAMES/vitoria_8c.html">8°C RITMOS ANCESTRAIS</a></li>
+                    <li role="none"><a role="menuitem" href="GAMES/almir_flap.html">7°B FLAP BIRD</a></li>
+                    
+                </ul>
+            </li>
+            
+            <!-- Nome da escola no canto direito -->
+            <li class="school-name">Colégio Campina da Lagoa</li>
+        </ul>
+    </nav>
 
 <div class="container">
     <a href="index.html" class="back-link">← Voltar à Home</a>

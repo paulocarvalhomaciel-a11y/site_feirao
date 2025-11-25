@@ -6,6 +6,34 @@
     <title>Feirão - Colégio Campina da Lagoa</title>
     <link rel="stylesheet" href="assets/style.css">
     <style>
+        :root {
+    --p-1: #03178C;
+    --p-2: #1473e6;
+    --p-3: #0D8C39;
+    --p-4: #F2DCC2;
+    --p-5: #0D0D0D;
+    --bg-soft: #fffaf0;
+    --text: var(--p-1);
+    --muted: rgba(20,115,230,0.72);
+    --radius: 10px;
+    --gap: 1rem;
+}
+body {
+    background-color: var(--bg-soft);
+    background-image:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'><rect width='800' height='600' fill='%2303178C'/><rect x='0' y='0' width='120' height='120' fill='%231473e6'/><rect x='120' y='0' width='120' height='120' fill='%230D8C39'/><rect x='240' y='0' width='120' height='120' fill='%23F2DCC2'/><rect x='360' y='0' width='120' height='120' fill='%2303178C'/><rect x='0' y='120' width='120' height='120' fill='%230D8C39'/><rect x='120' y='120' width='120' height='120' fill='%23F2DCC2'/><circle cx='620' cy='420' r='140' fill='%231473e6' opacity='0.14'/></svg>"),
+        linear-gradient(180deg, rgba(3,23,140,0.06), rgba(20,115,230,0.04));
+    background-repeat: repeat, no-repeat;
+    background-size: 900px 675px, cover;
+    background-position: 0 0, center;
+    color: var(--text);
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.7;
+    padding: 1.25rem;
+    animation: mosaicMove 60s linear infinite;
+    min-height: 100vh;
+    position: relative;
+}
         /* Inclui estilos rápidos para o menu Games e responsividade, igual ao index.html */
         .nav-games { position: relative; }
         nav ul {
@@ -63,13 +91,6 @@
             #games-menu { right: 0; left: auto; min-width: 180px; }
             .school-name { display: none; }
         }
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(135deg, #f2b33d 0%, #f27d3d 100%);
-            color: #1e293b;
-            margin: 0;
-            padding: 0;
-        }
         .container {
             max-width: 1000px; margin: 2rem auto; padding: 2rem;
             background: rgba(255,255,255,0.96); border-radius: 12px;
@@ -105,31 +126,35 @@
     <nav aria-label="Navegação principal - Colégio Campina da Lagoa">
         <ul>
         <link rel="stylesheet" href="assets/style.css">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="#history">História</a></li>
-            <li><a href="folclore-afro.html">Folclore</a></li>
-            <li><a href="equipes.html">Equipes</a></li>
-            <li><a href="mapa.html">Mapa</a></li>
-            <li><a href="campina_historia.html">História do Colégio</a></li>
-            <li class="nav-games">
-                <button id="games-button" aria-haspopup="true" aria-expanded="false">Games!</button>
-                <ul id="games-menu" role="menu" aria-hidden="true">
-                    <li role="none"><a role="menuitem" href="Davi_8A.html">8°A FORCA</a></li>
-                    <li role="none"><a role="menuitem" href="GAMES/culinaria.html">8°B QUIZ CULINÁRIO</a></li>
-                    <li role="none"><a role="menuitem" href="GAMES/vitoria_8c.html">8°C RITMOS ANCESTRAIS</a></li>
-                    <li role="none"><a role="menuitem" href="GAMES/almir_flap.html">7°B FLAP BIRD</a></li>
-                </ul>
-            </li>
-            <li class="school-name">Colégio Campina da Lagoa</li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="campina_historia.html">Nossa história</a></li>
+                <li><a href="grade.html">Nossa Grade</a></li>
+                <li><a href="eventos.html">Eventos</a></li>
+                <!-- CHANGED: Games dropdown -->
+                <li class="nav-games">
+                    <button id="games-button" aria-haspopup="true" aria-expanded="false">Games!</button>
+                    <ul id="games-menu" role="menu" aria-hidden="true">
+                        <li role="none"><a role="menuitem" href="Davi_8A.html">8°A FORCA</a></li>
+                        <li role="none"><a role="menuitem" href="GAMES/culinaria.html">8°B QUIZ CULINÁRIO</a></li>
+                        <li role="none"><a role="menuitem" href="GAMES/vitoria_8c.html">8°C RITMOS ANCESTRAIS</a></li>
+                        <li role="none"><a role="menuitem" href="GAMES/almir_flap.html">7°B FLAP BIRD</a></li>
+                    </ul>
+                </li>
+                <li class="school-name">Colégio Campina da Lagoa</li>
         </ul>
     </nav>
     <div class="container">
         <h1>Feirão do Colégio Campina da Lagoa</h1>
-        <h2>Em breve, novidades e informações sobre o Feirão!</h2>
+        <div class="shortcut-navs" style="display: flex; gap: 2rem; justify-content: center; margin: 2.5rem 0; flex-wrap: wrap;">
+            <a href="historia.html" class="shortcut-nav" style="background: var(--p-2); color: #fff; border-radius: 18px; min-width: 180px; min-height: 90px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; text-decoration: none; box-shadow: 0 4px 18px rgba(20,115,230,0.12); text-align: center; margin: 0.5rem;">história</a>
+            <a href="folclore-afro.html" class="shortcut-nav" style="background: var(--p-2); color: #fff; border-radius: 18px; min-width: 180px; min-height: 90px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; text-decoration: none; box-shadow: 0 4px 18px rgba(20,115,230,0.12); text-align: center; margin: 0.5rem;">folclore</a>
+            <a href="equipes.html" class="shortcut-nav" style="background: var(--p-2); color: #fff; border-radius: 18px; min-width: 180px; min-height: 90px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; text-decoration: none; box-shadow: 0 4px 18px rgba(20,115,230,0.12); text-align: center; margin: 0.5rem;">equipes</a>
+            <a href="mapa.html" class="shortcut-nav" style="background: var(--p-2); color: #fff; border-radius: 18px; min-width: 180px; min-height: 90px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; text-decoration: none; box-shadow: 0 4px 18px rgba(20,115,230,0.12); text-align: center; margin: 0.5rem;">mapa</a>
+        </div>
         <p>Esta página está sendo preparada com toda a identidade visual do portal. Aguarde por conteúdos, fotos e detalhes do evento.</p>
     </div>
     <footer>
-        <p>© <span id="year">2025</span> Folclore Brasileiro. Todos os direitos reservados.</p>
+        <p>© <span id="year">2025</span> Fole Brasileiro. Todos os direitos reservados.</p>
     </footer>
     <script src="assets/js/main.js" defer></script>
     <script>
