@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>História do Colégio Campina da Lagoa</title>
+    <style>
+        /* dropdown games */
+        .nav-games { position: relative; }
+        
+        /* Estilo para o nome da escola no canto direito */
+        nav ul {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+        .school-name {
+            margin-left: auto;
+            font-weight: 700;
+            color: #fff;
+            padding: 8px 12px;
+            white-space: nowrap;
+        }
+        
+        #games-button {
+            background: linear-gradient(45deg, #F2B33D, #F29727);
+            color: #401201;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(242,179,61,0.18);
+        }
+        #games-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            background: rgba(10,5,2,0.98);
+            border: 1px solid rgba(242,179,61,0.12);
+            border-radius: 29px;
+            padding: 8px;
+            min-width: 280px;
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+            z-index: 200;
+        }
+        #games-menu a {
+            display: block;
+            padding: 8px 10px;
+            color: var(--light);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+        #games-menu a:hover, #games-menu a:focus {
+            background: rgba(242,179,61,0.08);
+            color: var(--gold);
+            outline: none;
+        }
+        #games-menu[aria-hidden="false"] { display: flex; }
+        /* responsivo */
+        @media (max-width:640px){
+            #games-menu { right: 0; left: auto; min-width: 180px; }
+            .school-name { display: none; } /* Esconde o nome da escola em telas pequenas */
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #f2b33d 0%, #f27d3d 100%);
+            color: #1e293b;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px; margin: 2rem auto; padding: 2rem;
+            background: rgba(255,255,255,0.96); border-radius: 12px;
+            border: 1px solid rgba(115,48,9,0.06); box-shadow: 0 8px 32px rgba(115,48,9,0.08);
+            position: relative; z-index: 10;
+        }
+        h1, h2, h3 {
+            color: #733009;
+            margin-top: 0;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.6rem;
+            margin-bottom: 0.5rem;
+            box-shadow:0 4px 16px rgba(0,0,0,0.08);
+            border-radius:16px;
+            
+        }
+        h2 {
+            font-size: 1.6rem;
+            margin-bottom: 1.2rem;
+        }
+        h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+        }
+        ul, li {
+            font-size: 1.05rem;
+        }
+        .info {
+            background: #f2b33d22;
+            border-left: 5px solid #f2b33d;
+            padding: 1rem 1.5rem;
+            margin: 2rem 0;
+            border-radius: 10px;
+        }
+        .contact {
+            margin-top: 2.5rem;
+            padding: 1.2rem;
+            background: #f27d3d22;
+            border-radius: 10px;
+            font-size: 1.08rem;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #f2b33d, #f27d3d);
+            color: #733009;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 1rem;
+            box-shadow: 0 4px 16px rgba(242,179,61,0.18);
+            transition: transform 0.18s, box-shadow 0.18s;
+        }
+        .back-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(242,179,61,0.28);
+        }
+        @media (max-width: 600px) {
+            .container { padding: 1.2rem 0.5rem; }
+            h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navegação principal -->
+    <nav aria-label="Navegação principal - Colégio Campina da Lagoa">
+        <ul>
+        <link rel="stylesheet" href="assets/style.css">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#history">História</a></li>
+            <li><a href="folclore-afro.html">Folclore</a></li>
+            <li><a href="equipes.html">Equipes</a></li>
+            <li><a href="mapa.html">Mapa</a></li>
+            <li><a href="campina_historia.html">História do Colégio</a></li>
+
+            <!-- CHANGED: Games dropdown -->
+            <li class="nav-games">
+                <button id="games-button" aria-haspopup="true" aria-expanded="false">Games!</button>
+                <ul id="games-menu" role="menu" aria-hidden="true">
+                    <li role="none"><a role="menuitem" href="Davi_8A.html">8°A FORCA</a></li>
+                    <li role="none"><a role="menuitem" href="GAMES/culinaria.html">8°B QUIZ CULINÁRIO</a></li>
+                    <li role="none"><a role="menuitem" href="GAMES/vitoria_8c.html">8°C RITMOS ANCESTRAIS</a></li>
+                    <li role="none"><a role="menuitem" href="GAMES/almir_flap.html">7°B FLAP BIRD</a></li>
+                    
+                </ul>
+            </li>
+            
+            <!-- Nome da escola no canto direito -->
+            <li class="school-name">Colégio Campina da Lagoa</li>
+        </ul>
+    </nav>
+    <div class="container">
+        <a href="index.html" class="back-link">← Voltar</a>
+        <img src="assets/images/logo cecal (2).png" alt="Logo Colégio Campina da Lagoa" 
+        style="display:block;margin:0 auto 2rem auto;max-width:380px;width:100%;border-radius:16px);">
+        <h1>Colégio Estadual Campina da Lagoa – Ensino Fundamental e Médio</h1>
+        <h2>Educação em Tempo Integral – Programa Paraná Integral</h2>
+        <p>Bem-vindo ao Colégio Estadual Campina da Lagoa – EFM, a principal escola pública em tempo integral do município, integrante do Programa Paraná Integral desde 2021. Com mais de 70 anos de história, somos referência em educação de qualidade no interior do Paraná, formando cidadãos preparados para o futuro.</p>
+        <h3>Nossa História</h3>
+        <p>As raízes do Colégio Estadual Campina da Lagoa remontam a 1954, quando as primeiras aulas foram ministradas na antiga “capelinha” do povoado pelas professoras Lídia Menta e Valério Pianaro. Em 1955, com o apoio do então prefeito de Campo Mourão, Roberto Brzezinski, foi fundado o Grupo Escolar Roberto Brzezinski – o embrião da instituição que hoje orgulha toda a região.<br><br>
+            Com a emancipação político-administrativa de Campina da Lagoa em 1961, a escola cresceu junto ao município, ampliando etapas, modernizando instalações e consolidando-se como referência em educação pública. Desde 2021, ao integrar o Programa Paraná Integral, o colégio deu um salto definitivo: passou a oferecer jornada de 9 horas diárias e tornou-se um dos destaques estaduais do programa, figurando consistentemente entre as melhores escolas integrais do Paraná em desempenho, inovação pedagógica e formação humana.<br><br>
+            Aqui, a interdisciplinaridade é prática cotidiana. Nossos estudantes protagonizam projetos reais de impacto local, participam de componentes curriculares eletivos ricos em cultura, tecnologia, empreendedorismo e sustentabilidade, e vivenciam uma inserção social que vai muito além da sala de aula.<br><br>
+            Prova disso é a presença ininterrupta de alunos do colégio em todas as edições do Ganha Mundo desde o lançamento do programa – feito raro que reflete o critério rigoroso de seleção (excelência acadêmica + presença ativa) e o compromisso diário da nossa comunidade escolar. O protagonismo juvenil é marca registrada: grêmio estudantil forte, feiras de ciências premiadas, ações socioambientais e iniciativas que colocam o aluno como verdadeiro autor da própria história e da história da cidade.<br><br>
+            De uma capelinha improvisada em 1954 a um dos colégios-modelo do Paraná Integral em 2025: somos mais que uma escola – somos o lugar onde o campo forma cidadãos do mundo.
+        </p>
+        <h3>Educação em Tempo Integral – Como funciona hoje</h3>
+        <ul>
+            <li><b>Jornada escolar de 9 horas diárias</b> (das 7h30 às 16h30)</li>
+            <li>Ensino Fundamental (6º ao 9º ano) e Ensino Médio (1ª a 3ª série) 100% em tempo integral</li>
+            <li>Currículo completo + disciplinas eletivas: Projeto de Vida, Empreendedorismo, Programação, Educação Financeira e Protagonismo Juvenil</li>
+            <li>Atividades esportivas, culturais, socioemocionais e reforço pedagógico</li>
+            <li>Quatro refeições diárias gratuitas (café da manhã, almoço, lanche da tarde e jantar leve)</li>
+            <li>Ensino Médio Profissionalizante e Educação de Jovens e Adultos (EJA) no período noturno</li>
+        </ul>
+        <h3>Estrutura e Benefícios</h3>
+        <ul>
+            <li>Salas climatizadas, laboratórios de informática e ciências, biblioteca atualizada, quadra poliesportiva coberta e refeitório</li>
+            <li>Equipe pedagógica exclusiva e dedicada integralmente à escola</li>
+            <li>Melhoria comprovada no aprendizado, redução da evasão e maior preparação para o Enem, vestibulares e mercado de trabalho</li>
+        </ul>
+        <div class="info">
+            <h3>Nossa Missão</h3>
+            <p>Formar cidadãos éticos, críticos e protagonistas, oferecendo uma educação integral que desenvolve competências acadêmicas, socioemocionais e profissionais, com orgulho de ser campinense e raiz no campo.</p>
+        </div>
+        <h3>Faça parte do Paraná Integral!</h3>
+        <p>Matrículas abertas anualmente. Venha conhecer a escola que transforma vidas todos os dias.</p>
+        <div class="contact">
+            <b>Colégio Estadual Campina da Lagoa – EFM</b><br>
+            Rua Duque de Caxias, 296 – Centro<br>
+            CEP: 87345-000 – Campina da Lagoa – PR<br>
+            Telefone/WhatsApp: (44) 3542-1270<br>
+            E-mail: campinadalagoa@escola.pr.gov.br<br>
+            <br>
+            <b>Educação em tempo integral. Futuro em tempo real.</b>
+        </div>
+    </div>
+</body>
+</html>
