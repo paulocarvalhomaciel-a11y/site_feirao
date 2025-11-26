@@ -5,9 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Folclore Brasileiro</title>
     <meta name="description" content="Portal sobre o folclore e a história do Brasil: lendas, mitos e memória cultural.">
-    <link rel="stylesheet" href="assets/style.css">
+    <!-- Todas as regras de estilo foram movidas para dentro da tag <style> abaixo -->
     <!-- ADDED: estilos rápidos para o menu Games -->
     <style>
+    .main-flex {
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            gap: 2rem;
+            align-items: center;
+            width: 100%;
+        }
+        #school-summary {
+            width: 66%;
+            box-sizing: border-box;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .logo-box {
+            width: 33%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        .logo-img {
+            max-width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
         /* dropdown games */
         .game-name {
             color: #d90429 !important;
@@ -219,6 +249,7 @@
             .timeline-events {
                 padding: 1rem;
             }
+            
         }
     </style>
 </head>
@@ -280,7 +311,19 @@
      </header>
     
     <main id="main">
+        <div class="main-flex">
+            <section id="school-summary">
+                <h2>Resumo Histórico</h2>
+                <p>
+                Fundado em 1969, o Colégio Campina da Lagoa surgiu para atender à crescente demanda educacional da cidade, graças ao empenho da comunidade e lideranças locais. Inicialmente funcionando em prédio provisório, mudou-se em 1972 para sua sede atual, expandindo gradualmente sua estrutura e oferta de cursos. Em 2021, tornou-se Escola em Tempo Integral, após consulta pública e apoio das famílias, buscando superar desafios impostos pela pandemia e promover o desenvolvimento integral dos estudantes.
+                </p>
+            </section>
+            <div class="logo-box">
+                <img src="assets/images/logo_escola_1.png" alt="Logo CECAL" class="logo-img">
+            </div>
+        </div>
     </main>
+            
     <!-- Seção de História -->
     <footer>
         <p>© <span id="year">2025</span> Folclore Brasileiro. Todos os direitos reservados.</p>
