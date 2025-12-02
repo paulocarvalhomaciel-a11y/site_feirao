@@ -1,250 +1,20 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Folclore Brasileiro</title>
-    <meta name="description" content="Portal sobre o folclore e a história do Brasil: lendas, mitos e memória cultural.">
+    <meta name="description"
+        content="Portal sobre o folclore e a história do Brasil: lendas, mitos e memória cultural.">
     <link rel="stylesheet" href="assets/style.css">
     <!-- ADDED: estilos rápidos para o menu Games -->
-    <style>
-        /* dropdown games */
-        .nav-games { position: relative; }
-        
-        /* Estilo para o nome da escola no canto direito */
-        nav ul {
-            display: flex;
-            justify-content: flex-start;
-            align-items: flex-start;
-        }
-        .school-name {
-            margin-left: auto;
-            font-weight: 700;
-            color: #fff;
-            padding: 8px 12px;
-            white-space: nowrap;
-        }
-        
-        #games-button {
-            background: linear-gradient(45deg, #F2B33D, #F29727);
-            color: #401201;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 999px;
-            font-weight: 800;
-            cursor: pointer;
-            box-shadow: 0 8px 20px rgba(242,179,61,0.18);
-        }
-        #games-menu {
-            position: absolute;
-            top: calc(100% + 8px);
-            left: 0;
-            background: rgba(10,5,2,0.98);
-            border: 1px solid rgba(242,179,61,0.12);
-            border-radius: 29px;
-            padding: 8px;
-            min-width: 280px;
-            display: none;
-            flex-direction: column;
-            gap: 6px;
-            box-shadow: 0 12px 32px rgba(0,0,0,0.6);
-            z-index: 200;
-        }
-        #games-menu a {
-            display: block;
-            padding: 8px 10px;
-            color: var(--light);
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 700;
-        }
-        #games-menu a:hover, #games-menu a:focus {
-            background: rgba(242,179,61,0.08);
-            color: var(--gold);
-            outline: none;
-        }
-        #games-menu[aria-hidden="false"] { display: flex; }
-        /* responsivo */
-        @media (max-width:640px){
-            #games-menu { right: 0; left: auto; min-width: 180px; }
-            .school-name { display: none; } /* Esconde o nome da escola em telas pequenas */
-        }
-
-
-
-        /* NOVO: Estilos para a seção de história */
-        #history {
-            max-width: 1200px;
-            margin: 3rem auto;
-            padding: 2rem;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            color: #333;
-        }
-
-        #history h2 {
-            color: #1473e6;
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .history-content h3 {
-            color: #1473e6;
-            font-size: 1.8rem;
-            margin: 2rem 0 1rem;
-            border-bottom: 3px solid rgba(242, 179, 61, 0.3);
-            padding-bottom: 0.5rem;
-        }
-
-        .history-content h4 {
-            color: #1473e6;
-            font-size: 1.4rem;
-            margin: 1.5rem 0 0.8rem;
-        }
-
-        .history-content p {
-            line-height: 1.8;
-            margin-bottom: 1.2rem;
-            text-align: justify;
-            color: #444;
-        }
-
-        .history-content ul {
-            margin: 1rem 0;
-            padding-left: 2rem;
-        }
-
-        .history-content li {
-            margin-bottom: 0.8rem;
-            line-height: 1.6;
-            color: #444;
-        }
-
-        .history-content strong {
-            color: #1473e6;
-            font-weight: 700;
-        }
-
-        .timeline-events {
-            display: grid;
-            gap: 1.5rem;
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            border-left: 5px solid #F29727;
-        }
-
-        .event {
-            display: flex;
-            gap: 1.5rem;
-            align-items: flex-start;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .event:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15);
-        }
-
-        .event .year {
-            background: linear-gradient(45deg, #F2B33D, #F29727);
-            color: #401201;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            font-weight: 800;
-            font-size: 0.9rem;
-            white-space: nowrap;
-            box-shadow: 0 4px 12px rgba(242, 179, 61, 0.3);
-            flex-shrink: 0;
-        }
-
-        .event p {
-            margin: 0;
-            flex: 1;
-            color: #555;
-        }
-
-        .conclusion {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 1.5rem;
-            border-radius: 15px;
-            border-left: 5px solid #F2B33D;
-            font-style: italic;
-            font-weight: 500;
-            margin-top: 2rem;
-            color: #444;
-        }
-
-        @media (max-width: 768px) {
-            #history {
-                margin: 2rem 1rem;
-                padding: 1.5rem;
-            }
-            
-            #history h2 {
-                font-size: 2rem;
-            }
-            
-            .history-content h3 {
-                font-size: 1.5rem;
-            }
-            
-            .event {
-                flex-direction: column;
-                gap: 0.8rem;
-            }
-            
-            .event .year {
-                align-self: flex-start;
-            }
-            
-            .timeline-events {
-                padding: 1rem;
-            }
-        }
-
-        :root {
-    --p-1: #03178C;
-    --p-2: #1473e6;
-    --p-3: #0D8C39;
-    --p-4: #fffefe;
-    --p-5: #0D0D0D;
-    --bg-soft: #ffffff;
-    --text: var(--p-1);
-    --muted: rgba(20,115,230,0.72);
-    --radius: 10px;
-    --gap: 1rem;
-}
-body {
-    background-color: var(--bg-soft);
-    background-image:
-        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'><rect width='800' height='600' fill='%2303178C'/><rect x='0' y='0' width='120' height='120' fill='%231473e6'/><rect x='120' y='0' width='120' height='120' fill='%230D8C39'/><rect x='240' y='0' width='120' height='120' fill='%23#fffefe'/><rect x='360' y='0' width='120' height='120' fill='%2303178C'/><rect x='0' y='120' width='120' height='120' fill='%230D8C39'/><rect x='120' y='120' width='120' height='120' fill='%23#fffefe'/><circle cx='620' cy='420' r='140' fill='%231473e6' opacity='0.14'/></svg>"),
-        linear-gradient(180deg, rgba(3,23,140,0.06), rgba(20,115,230,0.04));
-    background-repeat: repeat, no-repeat;
-    background-size: 900px 675px, cover;
-    background-position: 0 0, center;
-    color: var(--text);
-    font-family: 'Roboto', sans-serif;
-    line-height: 1.7;
-    padding: 1.25rem;
-    animation: mosaicMove 60s linear infinite;
-    min-height: 100vh;
-    position: relative;
-}
-    </style>
 </head>
+
 <body>
     <!-- Navegação principal -->
     <nav aria-label="Navegação principal - Colégio Campina da Lagoa">
         <ul>
-        <link rel="stylesheet" href="assets/style.css">
             <li><a href="index.html">Home</a></li>
             <li><a href="campina_historia.html">Nossa história</a></li>
             <li><a href="grade.html">Nossa Grade</a></li>
@@ -258,113 +28,139 @@ body {
                     <li role="none"><a role="menuitem" href="GAMES/culinaria.html">8°B QUIZ CULINÁRIO</a></li>
                     <li role="none"><a role="menuitem" href="GAMES/vitoria_8c.html">8°C RITMOS ANCESTRAIS</a></li>
                     <li role="none"><a role="menuitem" href="GAMES/almir_flap.html">7°B FLAP BIRD</a></li>
-                    
+
                 </ul>
             </li>
-            
+
             <!-- Nome da escola no canto direito -->
             <li class="school-name">Colégio Campina da Lagoa</li>
         </ul>
     </nav>
-        <header>
-            <div class="banner">
-                <div class="carousel-header">
-                    <div class="carousel-inner-header">
-                        <div class="carousel-indicators-header">
-                            <ul class="carousel-indicators-header">
-                                <li class="carousel-indicator-header active" data-target="0"></li>
-                                <li class="carousel-indicator-header" data-target="1"></li>
-                            </ul>
-                        </div>
-                        <div class="carousel-item-header active">
-                            <img class="header-image" src="assets/images/banners/banner_1.png" alt="Imagem 1 do carrossel" loading="lazy">
-                        </div>
+    <header>
+        <div class="banner">
+            <div class="carousel-header">
+                <div class="carousel-inner-header">
+                    <div class="carousel-indicators-header">
+                        <ul class="carousel-indicators-header">
+                            <li class="carousel-indicator-header active" data-target="0"></li>
+                            <li class="carousel-indicator-header" data-target="1"></li>
+                        </ul>
                     </div>
-                    <div class="carousel-item-header">
-                        <img class="header-image" src="assets/images/banners/banner_1.png" alt="Imagem 1 do carrossel" loading="lazy">
-                    </div>
+                    <div class="carousel-item-header active">
+                        <img class="header-image" src="assets/images/banners/banner_1.png" alt="Imagem 1 do carrossel"
+                            loading="lazy">
                     </div>
                 </div>
-             </div>
-         </header>
-
-<section id="history">
-        <h2>História da Cultura Afro-Brasileira</h2>
-        <div class="history-content">
-            <h3>Dia da Consciência Negra</h3>
-            <p style="color:#444;font-size:1.15rem;">Em 20 de novembro, celebramos o Dia da Consciência Negra, uma data dedicada à reflexão sobre a luta, resistência e valorização da cultura afro-brasileira. É um momento para reconhecer a importância dos povos africanos na formação da identidade nacional, promover o respeito à diversidade e combater o racismo. O Colégio Campina da Lagoa apoia ações educativas e culturais que fortalecem a inclusão e o protagonismo negro em nossa sociedade.</p>
-            <h3>Da África a Pindorama: Uma Jornada de Resistência</h3>
-            
-            <p>A cultura afro-brasileira tem suas raízes profundas nas diversas etnias africanas que foram forçadamente trazidas para o Brasil durante o período colonial. Entre os séculos XVI e XIX, aproximadamente 4 milhões de africanos foram transportados para Pindorama (nome indígena para o Brasil), principalmente das regiões da África Ocidental e Central.</p>
-
-            <h4>As Origens Africanas</h4>
-            <p>Os povos africanos trazidos ao Brasil pertenciam principalmente aos grupos:</p>
-            <ul>
-                <li><strong>Bantos:</strong> vindos de Angola, Congo e Moçambique, trouxeram tradições musicais como o samba e instrumentos como o berimbau</li>
-                <li><strong>Sudaneses:</strong> originários da África Ocidental (atuais Nigéria, Benin, Gana), contribuíram com religiões como o candomblé e práticas culturais iorubás</li>
-                <li><strong>Malês:</strong> muçulmanos alfabetizados que mantiveram tradições islâmicas e organizaram revoltas, como a dos Malês em 1835</li>
-            </ul>
-
-            <h4>Resistência e Preservação Cultural</h4>
-            <p>Mesmo sob a brutalidade da escravidão, os africanos e seus descendentes conseguiram preservar e recriar suas tradições culturais:</p>
-            <ul>
-                <li><strong>Religiosidade:</strong> sincretismo entre orixás africanos e santos católicos, criando o candomblé, umbanda e outras manifestações</li>
-                <li><strong>Música e Dança:</strong> desenvolvimento do samba, capoeira, jongo, maracatu e outras expressões artísticas</li>
-                <li><strong>Culinária:</strong> introdução de ingredientes como dendê, quiabo, inhame e pratos como acarajé, vatapá e feijoada</li>
-                <li><strong>Quilombos:</strong> comunidades de resistência como Palmares, liderado por Zumbi, que se tornou símbolo da luta pela liberdade</li>
-            </ul>
-
-            <h4>Eventos Marcantes</h4>
-            <div class="timeline-events">
-                <div class="event">
-                    <span class="year">1530-1888</span>
-                    <p><strong>Período Escravocrata:</strong> Chegada forçada de milhões de africanos e desenvolvimento de uma cultura de resistência</p>
-                </div>
-                
-                <div class="event">
-                    <span class="year">1600-1695</span>
-                    <p><strong>Quilombo dos Palmares:</strong> República quilombola que resistiu por quase 100 anos, liderada por Ganga Zumba e Zumbi</p>
-                </div>
-                
-                <div class="event">
-                    <span class="year">1835</span>
-                    <p><strong>Revolta dos Malês:</strong> Levante organizado por africanos muçulmanos em Salvador, marco da resistência intelectual negra</p>
-                </div>
-                
-                <div class="event">
-                    <span class="year">1888</span>
-                    <p><strong>Abolição da Escravatura:</strong> Lei Áurea oficializa o fim da escravidão, mas inicia período de marginalização social</p>
-                </div>
-                
-                <div class="event">
-                    <span class="year">1930-1940</span>
-                    <p><strong>Valorização Cultural:</strong> Samba torna-se símbolo nacional; capoeira deixa de ser criminalizada; surgem as primeiras escolas de samba</p>
-                </div>
-                
-                <div class="event">
-                    <span class="year">2003</span>
-                    <p><strong>Lei 10.639:</strong> Torna obrigatório o ensino de história e cultura afro-brasileira nas escolas</p>
-                </div>
-                
-                <div class="event">
-                    <span class="year">2023</span>
-                    <p><strong>Consciência Negra:</strong> 20 de novembro torna-se feriado nacional, honrando Zumbi dos Palmares</p>
+                <div class="carousel-item-header">
+                    <img class="header-image" src="assets/images/banners/banner_1.png" alt="Imagem 1 do carrossel"
+                        loading="lazy">
                 </div>
             </div>
-
-            <h4>Influências na Cultura Brasileira</h4>
-            <p>A cultura afro-brasileira moldou profundamente a identidade nacional brasileira:</p>
-            <ul>
-                <li><strong>Música:</strong> Do samba ao funk, do axé ao rap, influenciando todos os gêneros musicais brasileiros</li>
-                <li><strong>Religião:</strong> Sincretismo religioso presente em festivais como o de Iemanjá e na Festa do Senhor do Bonfim</li>
-                <li><strong>Esportes:</strong> Capoeira reconhecida como Patrimônio Imaterial da Humanidade pela UNESCO</li>
-                <li><strong>Literatura:</strong> Tradição oral que originou contos, lendas e a literatura de cordel</li>
-                <li><strong>Artes Visuais:</strong> Influência na arquitetura, escultura e artesanato brasileiro</li>
-            </ul>
-
-            <p class="conclusion">Hoje
         </div>
-    </section>
-                <footer>
-                    <p>© <span id="year">2025</span> Folclore Brasileiro. Todos os direitos reservados.</p>
-                </footer>
+        </div>
+    </header>
+    <section id="history">
+    <h2>História da Cultura Afro-Brasileira</h2>
+    <div class="history-content">
+        <h3>Dia da Consciência Negra</h3>
+        <p style="color:#444;font-size:1.15rem;">Em 20 de novembro, celebramos o Dia da Consciência Negra, uma data
+            dedicada à reflexão sobre a luta, resistência e valorização da cultura afro-brasileira. É um momento para
+            reconhecer a importância dos povos africanos na formação da identidade nacional, promover o respeito à
+            diversidade e combater o racismo. O Colégio Campina da Lagoa apoia ações educativas e culturais que
+            fortalecem a inclusão e o protagonismo negro em nossa sociedade.</p>
+        <h3>Da África a Pindorama: Uma Jornada de Resistência</h3>
+
+        <p>A cultura afro-brasileira tem suas raízes profundas nas diversas etnias africanas que foram forçadamente
+            trazidas para o Brasil durante o período colonial. Entre os séculos XVI e XIX, aproximadamente 4 milhões de
+            africanos foram transportados para Pindorama (nome indígena para o Brasil), principalmente das regiões da
+            África Ocidental e Central.</p>
+
+        <h4>As Origens Africanas</h4>
+        <p>Os povos africanos trazidos ao Brasil pertenciam principalmente aos grupos:</p>
+        <ul>
+            <li><strong>Bantos:</strong> vindos de Angola, Congo e Moçambique, trouxeram tradições musicais como o samba
+                e instrumentos como o berimbau</li>
+            <li><strong>Sudaneses:</strong> originários da África Ocidental (atuais Nigéria, Benin, Gana), contribuíram
+                com religiões como o candomblé e práticas culturais iorubás</li>
+            <li><strong>Malês:</strong> muçulmanos alfabetizados que mantiveram tradições islâmicas e organizaram
+                revoltas, como a dos Malês em 1835</li>
+        </ul>
+
+        <h4>Resistência e Preservação Cultural</h4>
+        <p>Mesmo sob a brutalidade da escravidão, os africanos e seus descendentes conseguiram preservar e recriar suas
+            tradições culturais:</p>
+        <ul>
+            <li><strong>Religiosidade:</strong> sincretismo entre orixás africanos e santos católicos, criando o
+                candomblé, umbanda e outras manifestações</li>
+            <li><strong>Música e Dança:</strong> desenvolvimento do samba, capoeira, jongo, maracatu e outras expressões
+                artísticas</li>
+            <li><strong>Culinária:</strong> introdução de ingredientes como dendê, quiabo, inhame e pratos como acarajé,
+                vatapá e feijoada</li>
+            <li><strong>Quilombos:</strong> comunidades de resistência como Palmares, liderado por Zumbi, que se tornou
+                símbolo da luta pela liberdade</li>
+        </ul>
+
+        <h4>Eventos Marcantes</h4>
+        <div class="timeline-events">
+            <div class="event">
+                <span class="year">1530-1888</span>
+                <p><strong>Período Escravocrata:</strong> Chegada forçada de milhões de africanos e desenvolvimento de
+                    uma cultura de resistência</p>
+            </div>
+
+            <div class="event">
+                <span class="year">1600-1695</span>
+                <p><strong>Quilombo dos Palmares:</strong> República quilombola que resistiu por quase 100 anos,
+                    liderada por Ganga Zumba e Zumbi</p>
+            </div>
+
+            <div class="event">
+                <span class="year">1835</span>
+                <p><strong>Revolta dos Malês:</strong> Levante organizado por africanos muçulmanos em Salvador, marco da
+                    resistência intelectual negra</p>
+            </div>
+
+            <div class="event">
+                <span class="year">1888</span>
+                <p><strong>Abolição da Escravatura:</strong> Lei Áurea oficializa o fim da escravidão, mas inicia
+                    período de marginalização social</p>
+            </div>
+
+            <div class="event">
+                <span class="year">1930-1940</span>
+                <p><strong>Valorização Cultural:</strong> Samba torna-se símbolo nacional; capoeira deixa de ser
+                    criminalizada; surgem as primeiras escolas de samba</p>
+            </div>
+
+            <div class="event">
+                <span class="year">2003</span>
+                <p><strong>Lei 10.639:</strong> Torna obrigatório o ensino de história e cultura afro-brasileira nas
+                    escolas</p>
+            </div>
+
+            <div class="event">
+                <span class="year">2023</span>
+                <p><strong>Consciência Negra:</strong> 20 de novembro torna-se feriado nacional, honrando Zumbi dos
+                    Palmares</p>
+            </div>
+        </div>
+
+        <h4>Influências na Cultura Brasileira</h4>
+        <p>A cultura afro-brasileira moldou profundamente a identidade nacional brasileira:</p>
+        <ul>
+            <li><strong>Música:</strong> Do samba ao funk, do axé ao rap, influenciando todos os gêneros musicais
+                brasileiros</li>
+            <li><strong>Religião:</strong> Sincretismo religioso presente em festivais como o de Iemanjá e na Festa do
+                Senhor do Bonfim</li>
+            <li><strong>Esportes:</strong> Capoeira reconhecida como Patrimônio Imaterial da Humanidade pela UNESCO</li>
+            <li><strong>Literatura:</strong> Tradição oral que originou contos, lendas e a literatura de cordel</li>
+            <li><strong>Artes Visuais:</strong> Influência na arquitetura, escultura e artesanato brasileiro</li>
+        </ul>
+
+        <p class="conclusion">Hoje
+    </div>
+</section>
+<footer>
+    <p>© <span id="year">2025</span> Folclore Brasileiro. Todos os direitos reservados.</p>
+</footer>
+<script src="assets/js/main.js" defer></script>
