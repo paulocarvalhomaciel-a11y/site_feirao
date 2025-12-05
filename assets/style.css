@@ -165,6 +165,10 @@ body {
 	--gap: 1rem;
 }
 
+p {
+    text-align: justify;
+}
+
 /* Reset / base */
 * {
 	box-sizing: border-box;
